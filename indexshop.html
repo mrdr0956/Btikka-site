@@ -140,18 +140,14 @@
 <body>
   <header>
     <h1>مرحبا بك في متجر بتكة 🛍️</h1>
-    <div class="brand">
-      <span class="brand-badge">BTikka</span>
-    </div>
+    <div class="brand"><span class="brand-badge">BTikka</span></div>
     <p class="lead">وجهتك الأولى للتسوق المنزلي بسهولة وراحة ✨</p>
     <p class="lead">اختر القسم الذي تريد التسوق منه 👇</p>
   </header>
 
   <div class="container">
     <div class="sections" id="sections"></div>
-    <div class="dropdown" id="dropdown">
-      <select id="dropdownSelect"></select>
-    </div>
+    <div class="dropdown" id="dropdown"><select id="dropdownSelect"></select></div>
 
     <div class="products-header">
       <h2 id="current-section">المنتجات</h2>
@@ -209,38 +205,38 @@
 
     // جلب المنتجات من الملف
     async function fetchProductsJson() {
-      const url = `products.json?ts=${Date.now()}`;
+      const url = `products.json?ts=${Date.now()}`; // كسر الكاش
       const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) throw new Error("فشل تحميل المنتجات");
       return await res.json();
     }
 
-    // عرض منتجين عشوائيًا من كل قسم عند الدخول
+    // دالة مساعدة: بناء كرت المنتج
+    function renderProductCard(p) {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img class="thumb" src="${p.photo}" alt="${p.name}"
+             onerror="this.src='https://via.placeholder.com/400x300/ffffff/000000?text=BTikka'">
+        <div class="content">
+          <h3 class="name">${p.name}</h3>
+          <p class="desc">${p.description || ""}</p>
+          <span class="price">السعر: ${p.price} ل.س</span>
+        </div>
+      `;
+      prodEl.appendChild(card);
+    }
+
+    // عرض 16 منتج عشوائي عند الدخول
     async function showRandomProducts() {
       titleEl.textContent = "منتجات مختارة عشوائيًا ✨";
       prodEl.innerHTML = "";
       try {
         const products = await fetchProductsJson();
+        const shuffled = [...products].sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 16); // 16 منتج فقط
+        selected.forEach(renderProductCard);
 
-        // تجميع المنتجات حسب القسم
-        const grouped = {};
-        products.forEach(p => {
-          const sec = (p.section || "").trim();
-          if (!grouped[sec]) grouped[sec] = [];
-          grouped[sec].push(p);
-        });
-
-        // اختيار منتجين من كل قسم
-        Object.keys(grouped).forEach(sec => {
-          const arr = grouped[sec];
-          if (arr.length > 0) {
-            const shuffled = [...arr].sort(() => 0.5 - Math.random());
-            const selected = shuffled.slice(0, 2);
-            selected.forEach(renderProductCard);
-          }
-        });
-
-        // إذا ما ظهر شيء (مثلاً الملف فارغ)
         if (!prodEl.children.length) {
           prodEl.innerHTML = `<div class="empty">لا توجد منتجات متاحة الآن. ✨</div>`;
         }
@@ -274,29 +270,12 @@
       }
     }
 
-    // دالة مساعدة: بناء كرت المنتج
-    function renderProductCard(p) {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img class="thumb" src="${p.photo}" alt="${p.name}"
-             onerror="this.src='https://via.placeholder.com/400x300/ffffff/000000?text=BTikka'">
-        <div class="content">
-          <h3 class="name">${p.name}</h3>
-          <p class="desc">${p.description || ""}</p>
-          <span class="price">السعر: ${p.price} ل.س</span>
-        </div>
-      `;
-      prodEl.appendChild(card);
-    }
-
-    // زر التحديث: يعيد تحميل القسم الحالي
+    // زر التحديث: يعيد تحميل القسم الحالي أو المنتجات العشوائية
     refreshBtn.onclick = () => {
       if (titleEl.textContent.includes("—")) {
         const section = titleEl.textContent.split("—")[1].trim();
         showProducts(section);
       } else {
-        // إذا كنا في صفحة "منتجات مختارة عشوائيًا"
         showRandomProducts();
       }
     };
