@@ -1,109 +1,125 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>متجر بتكة 🛍️ (BTikka)</title>
   <style>
+    :root {
+      --bg: #0f0f12;
+      --card: #17171c;
+      --muted: #b6b7c0;
+      --text: #ffffff;
+      --accent1: #e91e63;
+      --accent2: #7c4dff;
+      --accent3: #00c2ff;
+      --border: #2a2a31;
+    }
+    * { box-sizing: border-box; }
     body {
-      font-family: "Tahoma", sans-serif;
-      direction: rtl;
-      background: #f9f9f9;
-      margin: 0;
-      padding: 0;
+      margin: 0; font-family: "Tahoma", system-ui, sans-serif; direction: rtl; background: var(--bg); color: var(--text);
     }
     header {
-      background: linear-gradient(135deg, #e91e63, #9c27b0);
-      color: #fff;
-      padding: 30px;
+      padding: 40px 20px;
+      background: radial-gradient(1000px 500px at 10% 10%, rgba(124,77,255,.25), transparent),
+                  radial-gradient(800px 400px at 90% 20%, rgba(233,30,99,.25), transparent),
+                  linear-gradient(135deg, #141419, #0f0f12 60%);
       text-align: center;
+      border-bottom: 1px solid var(--border);
     }
-    header h1 {
-      margin: 0;
-      font-size: 28px;
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px; margin-bottom: 12px;
+      font-weight: 700; letter-spacing: .5px;
     }
-    header p {
-      margin: 5px 0;
-      font-size: 16px;
+    .brand-badge {
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: #fff; padding: 6px 12px; border-radius: 999px; font-size: 12px;
+      box-shadow: 0 8px 30px rgba(233,30,99,.25);
     }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    .lead { margin: 4px 0; color: var(--muted); }
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
     .sections {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin: 30px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px; margin-top: 18px;
     }
     .section-card {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      width: 200px;
-      padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      background: linear-gradient(180deg, #191922, #15151b);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px; cursor: pointer; text-align: center;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      position: relative; overflow: hidden;
     }
-    .section-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    .section-card::before {
+      content: ""; position: absolute; inset: -1px;
+      background: linear-gradient(135deg, rgba(124,77,255,.15), rgba(0,194,255,.08));
+      opacity: 0; transition: opacity .25s ease;
+    }
+    .section-card:hover { transform: translateY(-4px); border-color: #3b3b45; }
+    .section-card:hover::before { opacity: 1; }
+    .section-title { font-size: 15px; margin: 0; color: #eaeaf3; }
+    .products-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 28px; margin-bottom: 12px;
+    }
+    .products-header h2 { margin: 0; font-size: 20px; }
+    .refresh {
+      background: linear-gradient(135deg, var(--accent3), var(--accent2));
+      color: #091015; border: none; border-radius: 10px; padding: 8px 12px; cursor: pointer;
+      font-weight: 600; box-shadow: 0 8px 24px rgba(124,77,255,.25);
     }
     .products {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin: 30px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
     }
     .card {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      width: 220px;
-      padding: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      text-align: center;
-      transition: transform 0.2s;
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      overflow: hidden; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
-    .card:hover {
-      transform: scale(1.05);
+    .card:hover { transform: translateY(-3px); border-color: #3b3b45; box-shadow: 0 10px 28px rgba(0,0,0,.35); }
+    .thumb {
+      width: 100%; height: 160px; object-fit: cover; background: #0d0d11;
     }
-    .card img {
-      max-width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 5px;
-    }
-    .card h3 {
-      margin: 10px 0 5px;
-      font-size: 18px;
-    }
-    .card p {
-      margin: 5px 0;
-      font-size: 14px;
-      color: #555;
-    }
+    .content { padding: 12px; }
+    .name { margin: 4px 0 2px; font-size: 16px; }
+    .desc { margin: 4px 0 8px; font-size: 13px; color: var(--muted); min-height: 36px; }
     .price {
-      font-weight: bold;
-      color: #e91e63;
+      display: inline-block; font-weight: 700; color: #ff77a9; background: rgba(233,30,99,.08);
+      border: 1px solid rgba(233,30,99,.25); border-radius: 8px; padding: 6px 10px;
     }
     .empty {
-      font-size: 18px;
-      color: #777;
-      margin-top: 20px;
+      color: var(--muted); background: #141419; border: 1px dashed #34343b;
+      border-radius: 12px; padding: 16px; text-align: center; grid-column: 1 / -1;
     }
+    footer { text-align: center; color: var(--muted); padding: 24px 12px; }
   </style>
 </head>
 <body>
   <header>
+    <div class="brand">
+      <span class="brand-badge">BTikka</span>
+      <span>متجر موثوق للتسوق السريع</span>
+    </div>
     <h1>مرحبًا بك في متجر بتكة 🛍️ (BTikka)</h1>
-    <p>وجهتك الأولى للتسوق الإلكتروني بسهولة وراحة ✨</p>
-    <p>اختر القسم الذي تريد التسوق منه 👇</p>
+    <p class="lead">وجهتك الأولى للتسوق الإلكتروني بسهولة وراحة ✨</p>
+    <p class="lead">اختر القسم الذي تريد التسوق منه 👇</p>
   </header>
 
-  <div class="sections" id="sections"></div>
-  <div class="products" id="products"></div>
+  <div class="container">
+    <div class="sections" id="sections"></div>
+
+    <div class="products-header">
+      <h2 id="current-section">المنتجات</h2>
+      <button class="refresh" id="refresh">تحديث المنتجات</button>
+    </div>
+
+    <div class="products" id="products"></div>
+  </div>
+
+  <footer>© BTikka — تسوقك أسهل معنا</footer>
 
   <script>
-    const sections = [
+    const SECTIONS = [
       "مطاعم وحلويات",
       "سوبر ماركت – مواد غذائية",
       "أدوات كهربائية",
@@ -113,44 +129,72 @@
       "مواد بناء وتشطيب"
     ];
 
+    const secEl = document.getElementById("sections");
+    const prodEl = document.getElementById("products");
+    const titleEl = document.getElementById("current-section");
+    const refreshBtn = document.getElementById("refresh");
+
     // عرض الأقسام كبطاقات
-    const secContainer = document.getElementById("sections");
-    sections.forEach(sec => {
+    SECTIONS.forEach(sec => {
       const card = document.createElement("div");
       card.className = "section-card";
-      card.textContent = sec;
+      card.innerHTML = `<p class="section-title">${sec}</p>`;
       card.onclick = () => showProducts(sec);
-      secContainer.appendChild(card);
+      secEl.appendChild(card);
     });
 
-    async function showProducts(section) {
-      const res = await fetch("products.json");
-      const products = await res.json();
-      const filtered = products.filter(p => p.section === section);
-
-      const prodContainer = document.getElementById("products");
-      prodContainer.innerHTML = ""; // تفريغ المنتجات السابقة
-
-      if (filtered.length === 0) {
-        prodContainer.innerHTML = `<p class="empty">✨ قريبًا سوف تنزل المنتجات في قسم "${section}" ✨</p>`;
-        return;
-      }
-
-      filtered.forEach(p => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <img src="${p.photo}" alt="${p.name}">
-          <h3>${p.name}</h3>
-          <p>${p.description}</p>
-          <p class="price">السعر: ${p.price} ل.س</p>
-        `;
-        prodContainer.appendChild(card);
-      });
-
-      // تمرير الصفحة للأسفل لعرض المنتجات
-      prodContainer.scrollIntoView({behavior: "smooth"});
+    // كسر الكاش بإضافة معامل زمني لكل طلب
+    async function fetchProductsJson() {
+      const url = `products.json?ts=${Date.now()}`;
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error("فشل تحميل المنتجات");
+      return await res.json();
     }
+
+    async function showProducts(section) {
+      titleEl.textContent = `المنتجات — ${section}`;
+      prodEl.innerHTML = "";
+
+      try {
+        const products = await fetchProductsJson();
+        const filtered = products.filter(p => (p.section || "").trim() === section.trim());
+
+        if (filtered.length === 0) {
+          prodEl.innerHTML = `<div class="empty">✨ قريبًا سوف تنزل المنتجات في قسم "${section}" ✨</div>`;
+          return;
+        }
+
+        filtered.forEach(p => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img class="thumb" src="${p.photo}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x300/141419/ffffff?text=BTikka'">
+            <div class="content">
+              <h3 class="name">${p.name}</h3>
+              <p class="desc">${p.description || ""}</p>
+              <span class="price">السعر: ${p.price} ل.س</span>
+            </div>
+          `;
+          prodEl.appendChild(card);
+        });
+
+        // تمرير إلى المنتجات بسلاسة
+        prodEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch (err) {
+        prodEl.innerHTML = `<div class="empty">حدث خطأ في جلب المنتجات. حاول مجددًا.</div>`;
+        console.error(err);
+      }
+    }
+
+    // زر التحديث لكسر الكاش يدويًا
+    refreshBtn.onclick = () => {
+      if (titleEl.textContent.includes("—")) {
+        const section = titleEl.textContent.split("—")[1].trim();
+        showProducts(section);
+      } else {
+        // إن لم يتم اختيار قسم، لا نفعل شيئًا
+      }
+    };
   </script>
 </body>
 </html>
