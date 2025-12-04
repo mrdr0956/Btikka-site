@@ -75,5 +75,12 @@
     "photo": "https://mrdr0956.github.io/Btikka-site/images/L.jpg",
     "description": "hkj",
     "price": "87987"
+  },
+  {
+    "section": "🍰 مطاعم وحلويات",
+    "name": "لبلب",
+    "photo": "لبلب",
+    "description": "قفق",
+    "price": "656"
   }
 ]
