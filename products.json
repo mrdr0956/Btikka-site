@@ -25,5 +25,14 @@
     "description": "ضايع متل خولاني",
     "type": "حلاقة",
     "price": "5000"
+  },
+  {
+    "kind": "product",
+    "section": "⚡ أدوات كهربائي",
+    "name": "استشوار",
+    "photo": "https://mrdr0956.github.io/Btikka-site/images/L.jpg",
+    "description": "مالو عرفان شو بدوا متل خولاني",
+    "type": "حلاقة",
+    "price": "70000"
   }
 ]
