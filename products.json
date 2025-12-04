@@ -6,5 +6,15 @@
     "photo": "https://mrdr0956.github.io/Btikka-site/images/shop.jpg",
     "description": "بروستد",
     "type": "مشاوي"
+  },
+  {
+    "kind": "product",
+    "section": "🍰 مطاعم وحلويات",
+    "name": "فروج مشوي متل خولاني",
+    "photo": "https://mrdr0956.github.io/Btikka-site/images/p.jpg",
+    "description": "خولاني",
+    "type": "مشاوي",
+    "price": "6000",
+    "shop": "الموصلي"
   }
 ]
