@@ -655,11 +655,17 @@
         // التحقق من وجود المحل في المنتجات
         const shopExists = checkShopExists(shop.name);
         
-        // إذا المحل موجود، نجعله قابل للنقر
-        if (shopExists) {
-          slide.style.cursor = "pointer";
-          slide.onclick = () => selectRestaurantSection(shop.name);
-        }
+        // نعرض جميع المحلات المميزة بنفس الشكل
+        slide.style.cursor = shopExists ? "pointer" : "default";
+        
+        // حدث النقر
+        slide.onclick = () => {
+          if (shopExists) {
+            // المحل موجود: نذهب مباشرة لمنتجاته
+            goToShopProducts(shop.name);
+          }
+          // إذا كان المحل غير موجود: لا نفعل شيئاً
+        };
         
         slide.innerHTML = `
           <div class="ad-content">
@@ -671,7 +677,6 @@
               <h3 class="ad-name">${shop.name}</h3>
               <p class="ad-description">${shop.description || "محل مميز في متجر بتكة"}</p>
               <div class="ad-badge">⭐ محل مميز</div>
-              ${!shopExists ? '<p style="color: #ccc; font-size: 12px; margin-top: 10px;">(قريباً سيكون متاحاً)</p>' : ''}
             </div>
           </div>
         `;
@@ -680,6 +685,61 @@
       });
       
       updateCarouselPosition();
+    }
+
+    // الانتقال المباشر لمنتجات المحل
+    function goToShopProducts(shopName) {
+      // 1. إخفاء الأقسام وإظهار القائمة المنسدلة
+      secEl.style.display = "none";
+      dropdown.style.display = "block";
+      
+      // 2. اختيار قسم المطاعم
+      const restaurantSection = "🍰 مطاعم وحلويات";
+      dropdownSelect.value = restaurantSection;
+      
+      // 3. إظهار قسم المطاعم
+      showSection(restaurantSection);
+      
+      // 4. بعد تحميل القسم، ننتقل مباشرة للمحل
+      setTimeout(() => {
+        // البحث عن المحل في البطاقات المعروضة
+        const shopCards = document.querySelectorAll('.card');
+        let found = false;
+        
+        shopCards.forEach(card => {
+          const cardTitle = card.querySelector('.name')?.textContent;
+          if (cardTitle === shopName) {
+            found = true;
+            // تمرير للبطاقة
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // تمييز البطاقة
+            card.style.boxShadow = "0 0 0 3px #ffd700";
+            card.style.transform = "scale(1.05)";
+            
+            // إضافة حدث النقر للبطاقة
+            card.onclick = () => {
+              showShopProducts(restaurantSection, shopName);
+            };
+            
+            // النقر تلقائياً على البطاقة بعد تأخير
+            setTimeout(() => {
+              card.click();
+            }, 300);
+            
+            // إزالة التمييز بعد 3 ثواني
+            setTimeout(() => {
+              card.style.boxShadow = "";
+              card.style.transform = "";
+            }, 3000);
+          }
+        });
+        
+        // إذا لم نجد المحل، نعرض رسالة
+        if (!found) {
+          alert(`المحل "${shopName}" غير موجود في قسم المطاعم.`);
+        }
+      }, 1000);
     }
 
     // عرض نقاط الكاروسيل
@@ -789,30 +849,6 @@
       initCarousel();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       titleEl.textContent = "منتجات مختارة عشوائيًا ✨";
-    }
-
-    // اختيار قسم المطاعم والبحث عن المحل
-    function selectRestaurantSection(shopName) {
-      secEl.style.display = "none";
-      dropdown.style.display = "block";
-      const restaurantSection = "🍰 مطاعم وحلويات";
-      dropdownSelect.value = restaurantSection;
-      showSection(restaurantSection);
-      
-      setTimeout(() => {
-        const shopCards = document.querySelectorAll('.card');
-        shopCards.forEach(card => {
-          if (card.querySelector('.name').textContent === shopName) {
-            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            card.style.boxShadow = "0 0 0 3px #ffd700";
-            card.style.transform = "scale(1.05)";
-            setTimeout(() => {
-              card.style.boxShadow = "";
-              card.style.transform = "";
-            }, 3000);
-          }
-        });
-      }, 1000);
     }
 
     // بناء Tabs + خيارات القائمة
