@@ -14,6 +14,8 @@
       --accent2: #7c4dff;
       --accent3: #00c2ff;
       --border: #2a2a31;
+      --ad-bg: linear-gradient(135deg, #1a0b2e 0%, #2d1b69 100%);
+      --ad-card: rgba(255, 255, 255, 0.1);
     }
     
     * {
@@ -72,175 +74,108 @@
       to { box-shadow: 0 0 20px rgba(233,30,99,.6); } 
     }
     
-    /* قسم الإعلانات - كاروسيل جديد */
-    .ads-carousel {
-      display: none;
-      position: relative;
-      background: linear-gradient(135deg, #1a0b2e 0%, #2d1b69 100%);
-      padding: 20px 0;
+    /* قسم الإعلانات */
+    .ads-section {
+      display: none; /* مخفي افتراضياً */
+      background: var(--ad-bg);
+      padding: 15px;
       border-bottom: 2px solid var(--accent2);
       overflow: hidden;
-      min-height: 320px;
     }
     
     .ads-header {
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
     
     .ads-header h3 {
       margin: 0;
       color: #ffd700;
-      font-size: 18px;
+      font-size: 16px;
     }
     
-    .carousel-container {
-      position: relative;
-      max-width: 800px;
-      margin: 0 auto;
-      height: 250px;
-      overflow: hidden;
-    }
-    
-    .carousel-slides {
+    .ads-slider {
       display: flex;
-      height: 100%;
-      transition: transform 0.5s ease-in-out;
-      width: 100%;
+      overflow-x: auto;
+      gap: 12px;
+      padding: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent2) var(--bg);
     }
     
-    .carousel-slide {
-      flex: 0 0 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 60px;
-      min-width: 100%;
+    .ads-slider::-webkit-scrollbar {
+      height: 6px;
     }
     
-    .ad-content {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-      max-width: 600px;
-      width: 100%;
-      padding: 20px;
+    .ads-slider::-webkit-scrollbar-track {
+      background: var(--bg);
+      border-radius: 4px;
     }
     
-    .ad-image-wrapper {
-      flex: 0 0 200px;
-      height: 180px;
+    .ads-slider::-webkit-scrollbar-thumb {
+      background: var(--accent2);
+      border-radius: 4px;
+    }
+    
+    .ad-card {
+      flex: 0 0 auto;
+      width: 160px;
+      background: var(--ad-card);
+      backdrop-filter: blur(10px);
       border-radius: 10px;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.05);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(124, 77, 255, 0.3);
+    }
+    
+    .ad-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent1);
+      box-shadow: 0 8px 15px rgba(124, 77, 255, 0.2);
     }
     
     .ad-image {
       width: 100%;
-      height: 100%;
+      height: 90px;
       object-fit: cover;
-      display: block;
-    }
-    
-    .ad-details {
-      flex: 1;
-      color: white;
-      min-width: 300px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      background: #2a2a31;
     }
     
     .ad-name {
-      font-size: 22px;
       font-weight: bold;
-      margin: 0 0 15px 0;
+      font-size: 13px;
+      margin: 4px 0;
       color: #fff;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      height: 18px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     
-    .ad-description {
-      font-size: 15px;
-      color: #e0e0e0;
-      margin: 0 0 20px 0;
-      line-height: 1.6;
-      min-height: 60px;
+    .ad-desc {
+      font-size: 11px;
+      color: #ccc;
+      margin: 4px 0;
+      line-height: 1.3;
+      height: 28px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
     
     .ad-badge {
       display: inline-block;
       background: linear-gradient(135deg, var(--accent1), var(--accent2));
       color: white;
-      padding: 8px 20px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: bold;
-      box-shadow: 0 4px 10px rgba(124, 77, 255, 0.3);
-    }
-    
-    /* أسهم الكاروسيل */
-    .carousel-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(124, 77, 255, 0.8);
-      color: white;
-      border: none;
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 10;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .carousel-arrow:hover {
-      background: var(--accent1);
-      transform: translateY(-50%) scale(1.15);
-      box-shadow: 0 0 20px rgba(233, 30, 99, 0.5);
-    }
-    
-    .carousel-arrow.prev {
-      right: 15px;
-    }
-    
-    .carousel-arrow.next {
-      left: 15px;
-    }
-    
-    /* نقاط الكاروسيل */
-    .carousel-dots {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 20px;
-    }
-    
-    .carousel-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .carousel-dot.active {
-      background: #ffd700;
-      transform: scale(1.3);
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-    }
-    
-    .carousel-dot:hover {
-      background: var(--accent1);
-      transform: scale(1.2);
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      margin-top: 4px;
     }
     
     .container { 
@@ -364,31 +299,6 @@
     }
     
     @media (max-width: 768px) {
-      .ads-carousel {
-        min-height: 400px;
-      }
-      
-      .carousel-slide {
-        padding: 0 20px;
-      }
-      
-      .ad-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
-        padding: 15px;
-      }
-      
-      .ad-image-wrapper {
-        width: 160px;
-        height: 160px;
-      }
-      
-      .ad-details {
-        min-width: auto;
-        width: 100%;
-      }
-      
       .products { 
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
         gap: 12px;
@@ -397,36 +307,9 @@
       .sections {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       }
-      
-      .carousel-arrow {
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
-      }
     }
     
     @media (max-width: 480px) {
-      .ads-carousel {
-        min-height: 450px;
-      }
-      
-      .carousel-slide {
-        padding: 0 10px;
-      }
-      
-      .ad-image-wrapper {
-        width: 140px;
-        height: 140px;
-      }
-      
-      .ad-name {
-        font-size: 20px;
-      }
-      
-      .ad-description {
-        font-size: 14px;
-      }
-      
       .products { 
         grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
         gap: 10px;
@@ -438,12 +321,6 @@
       
       .main-header {
         padding: 20px 15px;
-      }
-      
-      .carousel-arrow {
-        width: 35px;
-        height: 35px;
-        font-size: 18px;
       }
     }
     
@@ -467,24 +344,21 @@
     
     .image-container {
       width: 100%;
-      height: 180px;
+      height: 160px;
       overflow: hidden;
-      background: linear-gradient(135deg, #2a2a31, #3a3a45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: #2a2a31;
+      position: relative;
     }
     
     .thumb { 
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      transition: transform 0.3s ease;
     }
     
     .card:hover .thumb {
       transform: scale(1.05);
-      transition: transform 0.3s ease;
     }
     
     .content { 
@@ -595,20 +469,13 @@
     <p class="lead">اختر القسم الذي تريد التسوق منه 👇</p>
   </header>
 
-  <!-- قسم الإعلانات الجديد (كاروسيل) -->
-  <div class="ads-carousel" id="adsCarousel">
+  <!-- قسم الإعلانات (يظهر فقط عند التفعيل) -->
+  <div class="ads-section" id="adsSection">
     <div class="ads-header">
       <h3>🏆 المحلات المميزة لدينا</h3>
     </div>
-    <div class="carousel-container">
-      <div class="carousel-slides" id="carouselSlides">
-        <!-- الشرائح تُضاف هنا تلقائياً -->
-      </div>
-      <button class="carousel-arrow prev" id="prevBtn">‹</button>
-      <button class="carousel-arrow next" id="nextBtn">›</button>
-    </div>
-    <div class="carousel-dots" id="carouselDots">
-      <!-- النقاط تُضاف هنا تلقائياً -->
+    <div class="ads-slider" id="adsSlider">
+      <!-- الإعلانات تُضاف هنا تلقائياً -->
     </div>
   </div>
 
@@ -644,280 +511,39 @@
     const prodEl = document.getElementById("products");
     const titleEl = document.getElementById("current-section");
     const refreshBtn = document.getElementById("refresh");
+    const adsSection = document.getElementById("adsSection");
+    const adsSlider = document.getElementById("adsSlider");
     const homeButton = document.getElementById("homeButton");
-    const adsCarousel = document.getElementById("adsCarousel");
-    const carouselSlides = document.getElementById("carouselSlides");
-    const carouselDots = document.getElementById("carouselDots");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
 
-    // متغيرات الكاروسيل
-    let currentSlide = 0;
-    let slideInterval;
-    let featuredShops = [];
-    let allProducts = [];
+    // ========== دالات جديدة ==========
 
-    // ========== دالات الكاروسيل الجديدة ==========
-
-    // تهيئة الكاروسيل
-    async function initCarousel() {
-      try {
-        console.log('بدء تهيئة الكاروسيل...');
-        
-        // جلب الإعدادات
-        const settings = await fetchSettings();
-        const headerMode = settings.header_mode || "welcome";
-        console.log('وضع الرأس:', headerMode);
-        
-        if (headerMode === "welcome") {
-          adsCarousel.style.display = "none";
-          return;
-        }
-        
-        // جلب المحلات المميزة
-        featuredShops = await fetchFeaturedShops();
-        console.log('المحلات المميزة المحملة:', featuredShops.length);
-        
-        if (!featuredShops || featuredShops.length === 0) {
-          console.log('لا توجد محلات مميزة لعرضها');
-          adsCarousel.style.display = "none";
-          return;
-        }
-        
-        // جلب المنتجات للتحقق من وجود المحلات
-        try {
-          allProducts = await fetchProductsJson();
-          console.log('المنتجات المحملة:', allProducts.length);
-        } catch (e) {
-          console.warn('لا يمكن تحميل المنتجات، سيتم استخدام المحلات المميزة فقط');
-          allProducts = [];
-        }
-        
-        // عرض الكاروسيل
-        adsCarousel.style.display = "block";
-        renderCarouselSlides();
-        renderCarouselDots();
-        startCarousel();
-        
-        console.log('الكاروسيل جاهز للعمل، عدد الشرائح:', featuredShops.length);
-        
-      } catch (err) {
-        console.error("خطأ في تهيئة الكاروسيل:", err);
-        adsCarousel.style.display = "none";
-      }
+    // زر العودة للصفحة الرئيسية
+    function goToHomePage() {
+      // إعادة عرض الأقسام
+      secEl.style.display = "grid";
+      dropdown.style.display = "none";
+      
+      // إعادة تعيين القائمة المنسدلة
+      dropdownSelect.selectedIndex = 0;
+      
+      // عرض المنتجات العشوائية
+      showRandomProducts();
+      
+      // تحديث الإعلانات
+      displayAds();
+      
+      // تمرير للقسم العلوي بسلاسة
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // إعادة تعيين العنوان
+      titleEl.textContent = "منتجات مختارة عشوائيًا ✨";
     }
-
-    // التحقق من وجود المحل
-    function checkShopExists(shopName) {
-      if (!shopName) return false;
-      
-      // البحث في جميع المنتجات
-      const existsInProducts = allProducts.some(product => 
-        product.shop && product.shop.trim() === shopName.trim()
-      );
-      
-      // البحث في المحلات المميزة
-      const existsInFeatured = featuredShops.some(shop => 
-        shop && shop.name && shop.name.trim() === shopName.trim()
-      );
-      
-      return existsInProducts || existsInFeatured;
-    }
-
-    // عرض شرائح الكاروسيل
-    function renderCarouselSlides() {
-      console.log('عرض شرائح الكاروسيل...');
-      carouselSlides.innerHTML = "";
-      
-      if (!featuredShops || featuredShops.length === 0) {
-        console.error('لا توجد محلات لعرضها في الكاروسيل');
-        return;
-      }
-      
-      featuredShops.forEach((shop, index) => {
-        if (!shop) {
-          console.warn(`المحل في الفهرس ${index} غير معرف`);
-          return;
-        }
-        
-        const slide = document.createElement("div");
-        slide.className = "carousel-slide";
-        slide.dataset.index = index;
-        
-        // التحقق من وجود المحل
-        const shopExists = checkShopExists(shop.name);
-        
-        // جعل الشريحة قابلة للنقر
-        slide.style.cursor = "pointer";
-        
-        // حدث النقر - نذهب إلى المحل
-        slide.onclick = () => {
-          goToShopProducts(shop.name);
-        };
-        
-        // تأكد من وجود البيانات
-        const shopName = shop.name || "محل غير معروف";
-        const shopPhoto = shop.photo || "https://via.placeholder.com/400x300/7c4dff/ffffff?text=⭐";
-        const shopDescription = shop.description || "محل مميز في متجر بتكة";
-        
-        console.log(`إعداد الشريحة ${index}:`, {
-          name: shopName,
-          photo: shopPhoto,
-          description: shopDescription
-        });
-        
-        slide.innerHTML = `
-          <div class="ad-content">
-            <div class="ad-image-wrapper">
-              <img class="ad-image" src="${shopPhoto}" alt="${shopName}"
-                   loading="lazy"
-                   onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/7c4dff/ffffff?text=⭐'">
-            </div>
-            <div class="ad-details">
-              <h3 class="ad-name">${shopName}</h3>
-              <p class="ad-description">${shopDescription}</p>
-              <div class="ad-badge">⭐ محل مميز</div>
-            </div>
-          </div>
-        `;
-        
-        carouselSlides.appendChild(slide);
-      });
-      
-      updateCarouselPosition();
-    }
-
-    // الانتقال المباشر لمنتجات المحل
-    function goToShopProducts(shopName) {
-      console.log('الانتقال إلى منتجات المحل:', shopName);
-      
-      // 1. إخفاء الأقسام وإظهار القائمة المنسدلة
-      secEl.style.display = "none";
-      dropdown.style.display = "block";
-      
-      // 2. اختيار قسم المطاعم
-      const restaurantSection = "🍰 مطاعم وحلويات";
-      dropdownSelect.value = restaurantSection;
-      
-      // 3. إظهار قسم المطاعم
-      showSection(restaurantSection);
-      
-      // 4. بعد تحميل القسم، ننتقل مباشرة للمحل
-      setTimeout(() => {
-        // البحث عن المحل في البطاقات المعروضة
-        const shopCards = document.querySelectorAll('.card');
-        let found = false;
-        
-        shopCards.forEach(card => {
-          const cardTitle = card.querySelector('.name')?.textContent;
-          if (cardTitle === shopName) {
-            found = true;
-            // تمرير للبطاقة
-            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
-            // تمييز البطاقة
-            card.style.boxShadow = "0 0 0 3px #ffd700";
-            card.style.transform = "scale(1.05)";
-            
-            // إضافة حدث النقر للبطاقة
-            card.onclick = () => {
-              showShopProducts(restaurantSection, shopName);
-            };
-            
-            // النقر تلقائياً على البطاقة بعد تأخير
-            setTimeout(() => {
-              card.click();
-            }, 300);
-            
-            // إزالة التمييز بعد 3 ثواني
-            setTimeout(() => {
-              card.style.boxShadow = "";
-              card.style.transform = "";
-            }, 3000);
-          }
-        });
-        
-        // إذا لم نجد المحل، نعرض رسالة
-        if (!found) {
-          alert(`المحل "${shopName}" غير موجود في قسم المطاعم.`);
-        }
-      }, 1000);
-    }
-
-    // عرض نقاط الكاروسيل
-    function renderCarouselDots() {
-      carouselDots.innerHTML = "";
-      
-      featuredShops.forEach((shop, index) => {
-        if (!shop) return;
-        
-        const dot = document.createElement("span");
-        dot.className = `carousel-dot ${index === currentSlide ? 'active' : ''}`;
-        dot.dataset.index = index;
-        dot.onclick = () => goToSlide(index);
-        carouselDots.appendChild(dot);
-      });
-    }
-
-    // تحديث موضع الكاروسيل
-    function updateCarouselPosition() {
-      if (!carouselSlides || !featuredShops || featuredShops.length === 0) return;
-      
-      carouselSlides.style.transform = `translateX(-${currentSlide * 100}%)`;
-      
-      // تحديث النقاط النشطة
-      document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentSlide);
-      });
-    }
-
-    // الانتقال لشريحة محددة
-    function goToSlide(index) {
-      if (!featuredShops || featuredShops.length === 0) return;
-      
-      currentSlide = index;
-      if (currentSlide >= featuredShops.length) currentSlide = 0;
-      if (currentSlide < 0) currentSlide = featuredShops.length - 1;
-      updateCarouselPosition();
-      resetCarouselInterval();
-    }
-
-    // الانتقال للشريحة التالية
-    function nextSlide() {
-      goToSlide(currentSlide + 1);
-    }
-
-    // الانتقال للشريحة السابقة
-    function prevSlide() {
-      goToSlide(currentSlide - 1);
-    }
-
-    // بدء التبديل التلقائي
-    function startCarousel() {
-      clearInterval(slideInterval);
-      if (featuredShops && featuredShops.length > 1) {
-        slideInterval = setInterval(nextSlide, 8000); // كل 8 ثواني
-      }
-    }
-
-    // إعادة تعيين المؤقت
-    function resetCarouselInterval() {
-      startCarousel();
-    }
-
-    // ========== الدوال المساعدة ==========
 
     // جلب إعدادات الموقع
     async function fetchSettings() {
       try {
         const url = `settings.json?ts=${Date.now()}`;
-        const res = await fetch(url, { 
-          cache: "no-store",
-          headers: {
-            'Accept': 'application/json',
-            'Cache-Control': 'no-cache'
-          }
-        });
+        const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) return { header_mode: "welcome" };
         return await res.json();
       } catch (err) {
@@ -930,62 +556,104 @@
     async function fetchFeaturedShops() {
       try {
         const url = `featured_shops.json?ts=${Date.now()}`;
-        console.log('جلب المحلات المميزة من:', url);
-        
-        const res = await fetch(url, { 
-          cache: "no-store",
-          headers: {
-            'Accept': 'application/json',
-            'Cache-Control': 'no-cache'
-          }
-        });
-        
-        console.log('استجابة المحلات المميزة:', res.status);
-        
-        if (!res.ok) {
-          console.error('فشل في جلب المحلات المميزة:', res.status);
-          return [];
-        }
-        
-        const shops = await res.json();
-        console.log('المحلات المستلمة:', shops);
-        
-        // تصفية المحلات النشطة فقط
-        const activeShops = shops.filter(shop => shop && shop.active !== false);
-        console.log('المحلات النشطة بعد التصفية:', activeShops.length);
-        
-        return activeShops;
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) return [];
+        return await res.json();
       } catch (err) {
         console.error("خطأ في جلب المحلات المميزة:", err);
         return [];
       }
     }
 
-    async function fetchProductsJson() {
-      const url = `products.json?ts=${Date.now()}`;
-      const res = await fetch(url, { 
-        cache: "no-store",
-        headers: {
-          'Accept': 'application/json',
-          'Cache-Control': 'no-cache'
+    // عرض الإعلانات
+    async function displayAds() {
+      try {
+        // جلب الإعدادات
+        const settings = await fetchSettings();
+        const headerMode = settings.header_mode || "welcome";
+        
+        // إذا كان الوضع ترحيب فقط، نخفي قسم الإعلانات
+        if (headerMode === "welcome") {
+          adsSection.style.display = "none";
+          return;
         }
-      });
-      if (!res.ok) throw new Error("فشل تحميل المنتجات");
-      return await res.json();
+        
+        // جلب المحلات المميزة
+        const featuredShops = await fetchFeaturedShops();
+        
+        // إذا لم توجد محلات مميزة، نخفي قسم الإعلانات
+        if (!featuredShops || featuredShops.length === 0) {
+          adsSection.style.display = "none";
+          return;
+        }
+        
+        // عرض قسم الإعلانات
+        adsSection.style.display = "block";
+        adsSlider.innerHTML = "";
+        
+        // إضافة كل محل مميز كإعلان
+        featuredShops.forEach(shop => {
+          const adCard = document.createElement("div");
+          adCard.className = "ad-card";
+          adCard.onclick = () => {
+            // عند النقر على الإعلان، نذهب إلى قسم المطاعم ونبحث عن المحل
+            selectRestaurantSection(shop.name);
+          };
+          
+          adCard.innerHTML = `
+            <div class="image-container">
+              <img class="ad-image" src="${shop.photo}" alt="${shop.name}"
+                   onerror="this.src='https://via.placeholder.com/400x300/7c4dff/ffffff?text=⭐'">
+            </div>
+            <div class="ad-name">${shop.name}</div>
+            <div class="ad-desc">${shop.description || "محل مميز"}</div>
+            <div class="ad-badge">⭐ مميز</div>
+          `;
+          
+          adsSlider.appendChild(adCard);
+        });
+        
+      } catch (err) {
+        console.error("خطأ في عرض الإعلانات:", err);
+        adsSection.style.display = "none";
+      }
     }
 
-    // ========== الدوال الأساسية ==========
-
-    // زر العودة للصفحة الرئيسية
-    function goToHomePage() {
-      secEl.style.display = "grid";
-      dropdown.style.display = "none";
-      dropdownSelect.selectedIndex = 0;
-      showRandomProducts();
-      initCarousel();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      titleEl.textContent = "منتجات مختارة عشوائيًا ✨";
+    // اختيار قسم المطاعم والبحث عن المحل
+    function selectRestaurantSection(shopName) {
+      // إخفاء التبويبات وإظهار القائمة المنسدلة
+      secEl.style.display = "none";
+      dropdown.style.display = "block";
+      
+      // اختيار قسم المطاعم
+      const restaurantSection = "🍰 مطاعم وحلويات";
+      dropdownSelect.value = restaurantSection;
+      
+      // عرض القسم
+      showSection(restaurantSection);
+      
+      // البحث عن المحل في القسم بعد تحميل المنتجات
+      setTimeout(() => {
+        const shopCards = document.querySelectorAll('.card');
+        shopCards.forEach(card => {
+          if (card.querySelector('.name').textContent === shopName) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // إضافة تأثير تمييز
+            card.style.boxShadow = "0 0 0 3px #ffd700";
+            card.style.transform = "scale(1.05)";
+            
+            // إزالة التمييز بعد 3 ثواني
+            setTimeout(() => {
+              card.style.boxShadow = "";
+              card.style.transform = "";
+            }, 3000);
+          }
+        });
+      }, 1000);
     }
+
+    // ========== الدوال الأصلية (معدلة) ==========
 
     // بناء Tabs + خيارات القائمة
     SECTIONS.forEach(sec => {
@@ -1011,14 +679,20 @@
       showSection(sec);
     };
 
+    async function fetchProductsJson() {
+      const url = `products.json?ts=${Date.now()}`;
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error("فشل تحميل المنتجات");
+      return await res.json();
+    }
+
     function renderCard({ title, subtitle, photo, description, price, badge, onClick }) {
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
         <div class="image-container">
           <img class="thumb" src="${photo}" alt="${title}"
-               loading="lazy"
-               onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/ffffff/000000?text=BTikka'">
+               onerror="this.src='https://via.placeholder.com/400x300/ffffff/000000?text=BTikka'">
         </div>
         <div class="content">
           <h3 class="name">${title}</h3>
@@ -1078,6 +752,7 @@
         const items = await fetchProductsJson();
         const secItems = items.filter(i => (i.section || "").trim() === section.trim());
 
+        // مطاعم وحلويات: اعرض المحلات أولًا (kind="shop")
         if (section.includes("مطاعم وحلويات")) {
           const shops = secItems.filter(i => i.kind === "shop");
           const products = secItems.filter(i => (i.kind || "product") === "product");
@@ -1092,6 +767,7 @@
             return;
           }
 
+          // اعرض المحلات كبطاقات قابلة للنقر
           shops.forEach(shop => renderCard({
             title: shop.shop,
             subtitle: shop.type,
@@ -1101,6 +777,7 @@
             onClick: () => showShopProducts(section, shop.shop)
           }));
 
+          // إذا لا توجد محلات لكن توجد منتجات مرتبطة بدون shop، اعرضها كمنتجات عامة
           if (shops.length === 0 && products.length > 0) {
             products.forEach(p => renderCard({
               title: p.name,
@@ -1111,6 +788,7 @@
             }));
           }
         } else {
+          // باقي الأقسام: اعرض المنتجات فقط (استثناء أي عناصر kind="shop")
           const products = secItems.filter(i => (i.kind || "product") === "product");
           if (products.length === 0) {
             prodEl.innerHTML = `
@@ -1195,58 +873,21 @@
       } else {
         showRandomProducts();
       }
-      await initCarousel();
+      // تحديث الإعلانات أيضاً
+      await displayAds();
     };
 
     // عند تحميل الصفحة أول مرة
     document.addEventListener("DOMContentLoaded", async () => {
-      console.log('الصفحة تم تحميلها، بدء التهيئة...');
       secEl.style.display = "grid";
       dropdown.style.display = "none";
       showRandomProducts();
       
-      // تهيئة الكاروسيل
-      await initCarousel();
+      // عرض الإعلانات
+      await displayAds();
       
-      // إضافة أحداث الأزرار
+      // إضافة حدث النقر لزر العودة للصفحة الرئيسية
       homeButton.addEventListener("click", goToHomePage);
-      prevBtn.addEventListener("click", () => {
-        prevSlide();
-        resetCarouselInterval();
-      });
-      nextBtn.addEventListener("click", () => {
-        nextSlide();
-        resetCarouselInterval();
-      });
-      
-      // إيقاف الكاروسيل عند التحويم
-      adsCarousel.addEventListener("mouseenter", () => {
-        clearInterval(slideInterval);
-        console.log('تم إيقاف الكاروسيل بسبب التحويم');
-      });
-      
-      adsCarousel.addEventListener("mouseleave", () => {
-        startCarousel();
-        console.log('تم استئناف الكاروسيل');
-      });
-      
-      // دالة تشخيصية لفحص البيانات
-      setTimeout(() => {
-        console.log('=== تشخيص الكاروسيل ===');
-        console.log('عدد المحلات المميزة:', featuredShops.length);
-        featuredShops.forEach((shop, i) => {
-          console.log(`المحل ${i}:`, {
-            name: shop?.name,
-            photo: shop?.photo,
-            description: shop?.description,
-            active: shop?.active
-          });
-        });
-        console.log('عدد الشرائح المعروضة:', document.querySelectorAll('.carousel-slide').length);
-        console.log('العرض الحالي للكاروسيل:', carouselSlides.offsetWidth);
-        console.log('الشريحة النشطة:', currentSlide);
-        console.log('=====================');
-      }, 2000);
     });
   </script>
 </body>
