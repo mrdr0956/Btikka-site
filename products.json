@@ -6,5 +6,15 @@
     "photo": "https://mrdr0956.github.io/Btikka-site/images/shop.jpg",
     "description": "بروستد",
     "type": "ماكولات جاهزة"
+  },
+  {
+    "kind": "product",
+    "section": "🍰 مطاعم وحلويات",
+    "name": "فروج مشوي",
+    "photo": "https://mrdr0956.github.io/Btikka-site/images/p.jpg",
+    "description": "مع خولاني مقبلات",
+    "type": "مشاوي",
+    "price": "6000",
+    "shop": "خولاني"
   }
 ]
