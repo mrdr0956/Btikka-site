@@ -27,6 +27,34 @@
                   linear-gradient(135deg, #1a1a1f, #0f0f12 70%);
     }
     
+    /* زر العودة للصفحة الرئيسية */
+    .brand-badge {
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: #fff; padding: 6px 16px; border-radius: 999px;
+      font-size: 16px; font-weight: bold; letter-spacing: 1px;
+      box-shadow: 0 8px 30px rgba(124,77,255,.4);
+      animation: glow 2s infinite alternate;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+      margin: 5px;
+    }
+    
+    .brand-badge:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 35px rgba(233,30,99,.5);
+    }
+    
+    .brand-badge:active {
+      transform: scale(0.95);
+    }
+    
+    @keyframes glow { 
+      from { box-shadow: 0 0 10px rgba(124,77,255,.4); } 
+      to { box-shadow: 0 0 20px rgba(233,30,99,.6); } 
+    }
+    
     /* قسم الإعلانات */
     .ads-section {
       display: none; /* مخفي افتراضياً */
@@ -122,19 +150,6 @@
       margin-top: 5px;
     }
     
-    .brand-badge {
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      color: #fff; padding: 6px 16px; border-radius: 999px;
-      font-size: 16px; font-weight: bold; letter-spacing: 1px;
-      box-shadow: 0 8px 30px rgba(124,77,255,.4);
-      animation: glow 2s infinite alternate;
-    }
-    
-    @keyframes glow { 
-      from { box-shadow: 0 0 10px rgba(124,77,255,.4); } 
-      to { box-shadow: 0 0 20px rgba(233,30,99,.6); } 
-    }
-
     .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
 
     /* Tabs */
@@ -298,7 +313,9 @@
   <!-- الشريط العلوي (الترحيب) -->
   <header class="main-header">
     <h1>مرحبا بك في متجر بتكة 🛍️</h1>
-    <div class="brand"><span class="brand-badge">BTikka</span></div>
+    <div class="brand">
+      <button class="brand-badge" id="homeButton">BTikka</button>
+    </div>
     <p class="lead">وجهتك الأولى للتسوق المنزلي بسهولة وراحة ✨</p>
     <p class="lead">اختر القسم الذي تريد التسوق منه 👇</p>
   </header>
@@ -347,8 +364,31 @@
     const refreshBtn = document.getElementById("refresh");
     const adsSection = document.getElementById("adsSection");
     const adsSlider = document.getElementById("adsSlider");
+    const homeButton = document.getElementById("homeButton");
 
     // ========== دالات جديدة ==========
+
+    // زر العودة للصفحة الرئيسية
+    function goToHomePage() {
+      // إعادة عرض الأقسام
+      secEl.style.display = "flex";
+      dropdown.style.display = "none";
+      
+      // إعادة تعيين القائمة المنسدلة
+      dropdownSelect.selectedIndex = 0;
+      
+      // عرض المنتجات العشوائية
+      showRandomProducts();
+      
+      // تحديث الإعلانات
+      displayAds();
+      
+      // تمرير للقسم العلوي بسلاسة
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // إعادة تعيين العنوان
+      titleEl.textContent = "منتجات مختارة عشوائيًا ✨";
+    }
 
     // جلب إعدادات الموقع
     async function fetchSettings() {
@@ -633,23 +673,6 @@
     }
 
     // زر التحديث
-    refreshBtn.onclick = () => {
-      const t = titleEl.textContent;
-      if (t.includes("—")) {
-        const afterDash = t.split("—")[1].trim();
-        // إذا كنا داخل محل: "منتجات — القسم / المحل"
-        if (afterDash.includes("/")) {
-          const [section, shop] = afterDash.split("/").map(s => s.trim());
-          showShopProducts(section, shop);
-        } else {
-          showSection(afterDash);
-        }
-      } else {
-        showRandomProducts();
-      }
-    };
-
-    // تحديث الإعلانات عند النقر على زر التحديث
     refreshBtn.onclick = async () => {
       const t = titleEl.textContent;
       if (t.includes("—")) {
@@ -675,6 +698,9 @@
       
       // عرض الإعلانات
       await displayAds();
+      
+      // إضافة حدث النقر لزر العودة للصفحة الرئيسية
+      homeButton.addEventListener("click", goToHomePage);
     });
   </script>
 </body>
