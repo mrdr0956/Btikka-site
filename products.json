@@ -43,13 +43,5 @@
     "description": "مفول متل خولاني",
     "type": "معلب متل خولاني",
     "price": "000"
-  },
-  {
-    "kind": "featured_shop",
-    "shop": "الحيدرة",
-    "photo": "https://mrdr0956.github.io/Btikka-site/images/v.jpg",
-    "description": "للمحبة",
-    "type": "مشاوي",
-    "section": "🍰 مطاعم وحلويات"
   }
 ]
