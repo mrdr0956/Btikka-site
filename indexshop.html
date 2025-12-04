@@ -14,16 +14,114 @@
       --accent2: #7c4dff;
       --accent3: #00c2ff;
       --border: #2a2a31;
+      --ad-bg: linear-gradient(135deg, #1a0b2e 0%, #2d1b69 100%);
+      --ad-card: rgba(255, 255, 255, 0.1);
     }
     body { margin: 0; font-family: "Tahoma", system-ui, sans-serif; direction: rtl; background: var(--bg); color: var(--text); }
-    header {
+    
+    /* Header الأساسي */
+    .main-header {
       padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--border);
       background: radial-gradient(circle at 20% 30%, rgba(124,77,255,0.35), transparent 60%),
                   radial-gradient(circle at 80% 20%, rgba(233,30,99,0.35), transparent 60%),
                   linear-gradient(135deg, #1a1a1f, #0f0f12 70%);
     }
-    h1 { margin: 0 0 15px; font-size: 28px; color: #fff; font-weight: bold; }
-    .lead { margin: 6px 0; color: #e0e0e0; font-size: 16px; }
+    
+    /* قسم الإعلانات */
+    .ads-section {
+      display: none; /* مخفي افتراضياً */
+      background: var(--ad-bg);
+      padding: 20px;
+      border-bottom: 2px solid var(--accent2);
+    }
+    
+    .ads-header {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    
+    .ads-header h3 {
+      margin: 0;
+      color: #ffd700;
+      font-size: 18px;
+    }
+    
+    .ads-slider {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent2) var(--bg);
+    }
+    
+    .ads-slider::-webkit-scrollbar {
+      height: 8px;
+    }
+    
+    .ads-slider::-webkit-scrollbar-track {
+      background: var(--bg);
+      border-radius: 4px;
+    }
+    
+    .ads-slider::-webkit-scrollbar-thumb {
+      background: var(--accent2);
+      border-radius: 4px;
+    }
+    
+    .ad-card {
+      flex: 0 0 auto;
+      width: 180px;
+      background: var(--ad-card);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(124, 77, 255, 0.3);
+    }
+    
+    .ad-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent1);
+      box-shadow: 0 10px 20px rgba(124, 77, 255, 0.2);
+    }
+    
+    .ad-image {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .ad-name {
+      font-weight: bold;
+      font-size: 14px;
+      margin: 5px 0;
+      color: #fff;
+    }
+    
+    .ad-desc {
+      font-size: 12px;
+      color: #ccc;
+      margin: 5px 0;
+      line-height: 1.3;
+      height: 36px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .ad-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: white;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 12px;
+      margin-top: 5px;
+    }
+    
     .brand-badge {
       background: linear-gradient(135deg, var(--accent1), var(--accent2));
       color: #fff; padding: 6px 16px; border-radius: 999px;
@@ -31,7 +129,11 @@
       box-shadow: 0 8px 30px rgba(124,77,255,.4);
       animation: glow 2s infinite alternate;
     }
-    @keyframes glow { from { box-shadow: 0 0 10px rgba(124,77,255,.4); } to { box-shadow: 0 0 20px rgba(233,30,99,.6); } }
+    
+    @keyframes glow { 
+      from { box-shadow: 0 0 10px rgba(124,77,255,.4); } 
+      to { box-shadow: 0 0 20px rgba(233,30,99,.6); } 
+    }
 
     .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
 
@@ -44,52 +146,172 @@
       background: #191922; border: 1px solid var(--border); border-radius: 8px;
       padding: 10px 16px; cursor: pointer; transition: all .25s ease; color: #eaeaf3;
     }
-    .section-card:hover { transform: translateY(-3px); background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff; }
+    .section-card:hover { 
+      transform: translateY(-3px); 
+      background: linear-gradient(135deg, var(--accent1), var(--accent2)); 
+      color: #fff; 
+    }
 
     /* Dropdown */
-    .dropdown { display: none; margin: 20px auto; text-align: center; animation: slideDown 0.5s ease; }
-    .dropdown select {
-      padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
-      background: #191922; color: #fff; font-size: 15px; min-width: 240px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.25); transition: all .3s ease;
-      text-align: center; text-align-last: center;
+    .dropdown { 
+      display: none; 
+      margin: 20px auto; 
+      text-align: center; 
+      animation: slideDown 0.5s ease; 
     }
-    .dropdown select option { color: #000; background: #fff; text-align: center; }
+    
+    .dropdown select {
+      padding: 10px 14px; 
+      border-radius: 10px; 
+      border: 1px solid var(--border);
+      background: #191922; 
+      color: #fff; 
+      font-size: 15px; 
+      min-width: 240px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25); 
+      transition: all .3s ease;
+      text-align: center; 
+      text-align-last: center;
+    }
+    
+    .dropdown select option { 
+      color: #000; 
+      background: #fff; 
+      text-align: center; 
+    }
 
     /* Animations */
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { 
+      from { opacity: 0; transform: translateY(10px); } 
+      to { opacity: 1; transform: translateY(0); } 
+    }
+    
+    @keyframes slideDown { 
+      from { opacity: 0; transform: translateY(-10px); } 
+      to { opacity: 1; transform: translateY(0); } 
+    }
 
-    .products-header { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; margin-bottom: 12px; }
-    .products-header h2 { margin: 0; font-size: 20px; }
+    .products-header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-top: 24px; 
+      margin-bottom: 12px; 
+    }
+    
+    .products-header h2 { 
+      margin: 0; 
+      font-size: 20px; 
+    }
+    
     .refresh {
       background: linear-gradient(135deg, var(--accent3), var(--accent2));
-      color: #fff; border: none; border-radius: 8px; padding: 8px 12px;
-      cursor: pointer; font-weight: bold;
+      color: #fff; 
+      border: none; 
+      border-radius: 8px; 
+      padding: 8px 12px;
+      cursor: pointer; 
+      font-weight: bold;
     }
-    .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    
+    .products { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+      gap: 16px; 
+    }
+    
     .card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-      overflow: hidden; transition: all .2s ease;
+      background: var(--card); 
+      border: 1px solid var(--border); 
+      border-radius: 12px;
+      overflow: hidden; 
+      transition: all .2s ease;
     }
-    .card:hover { transform: translateY(-3px); border-color: #3b3b45; }
-    .thumb { width: 100%; height: 180px; object-fit: cover; background: #fff; }
-    .content { padding: 10px; }
-    .name { margin: 4px 0; font-size: 16px; font-weight: bold; }
-    .desc { margin: 4px 0 8px; font-size: 13px; color: var(--muted); min-height: 32px; }
-    .price { display: inline-block; font-weight: bold; color: #ff77a9; background: rgba(233,30,99,.08); border-radius: 6px; padding: 4px 8px; }
-    .badge { display:inline-block; background:#22232b; color:#b6b7c0; border:1px solid #2f3037; border-radius:6px; padding:3px 8px; font-size:12px; margin-top:6px; }
-    .empty { color: var(--muted); background: #141419; border: 1px dashed #34343b; border-radius: 10px; padding: 14px; text-align: center; grid-column: 1 / -1; }
-    footer { text-align: center; color: var(--muted); padding: 20px; }
+    
+    .card:hover { 
+      transform: translateY(-3px); 
+      border-color: #3b3b45; 
+    }
+    
+    .thumb { 
+      width: 100%; 
+      height: 180px; 
+      object-fit: cover; 
+      background: #fff; 
+    }
+    
+    .content { 
+      padding: 10px; 
+    }
+    
+    .name { 
+      margin: 4px 0; 
+      font-size: 16px; 
+      font-weight: bold; 
+    }
+    
+    .desc { 
+      margin: 4px 0 8px; 
+      font-size: 13px; 
+      color: var(--muted); 
+      min-height: 32px; 
+    }
+    
+    .price { 
+      display: inline-block; 
+      font-weight: bold; 
+      color: #ff77a9; 
+      background: rgba(233,30,99,.08); 
+      border-radius: 6px; 
+      padding: 4px 8px; 
+    }
+    
+    .badge { 
+      display: inline-block; 
+      background: #22232b; 
+      color: #b6b7c0; 
+      border: 1px solid #2f3037; 
+      border-radius: 6px; 
+      padding: 3px 8px; 
+      font-size: 12px; 
+      margin-top: 6px; 
+    }
+    
+    .empty { 
+      color: var(--muted); 
+      background: #141419; 
+      border: 1px dashed #34343b; 
+      border-radius: 10px; 
+      padding: 14px; 
+      text-align: center; 
+      grid-column: 1 / -1; 
+    }
+    
+    footer { 
+      text-align: center; 
+      color: var(--muted); 
+      padding: 20px; 
+    }
   </style>
 </head>
 <body>
-  <header>
+  <!-- الشريط العلوي (الترحيب) -->
+  <header class="main-header">
     <h1>مرحبا بك في متجر بتكة 🛍️</h1>
     <div class="brand"><span class="brand-badge">BTikka</span></div>
     <p class="lead">وجهتك الأولى للتسوق المنزلي بسهولة وراحة ✨</p>
     <p class="lead">اختر القسم الذي تريد التسوق منه 👇</p>
   </header>
+
+  <!-- قسم الإعلانات (يظهر فقط عند التفعيل) -->
+  <div class="ads-section" id="adsSection">
+    <div class="ads-header">
+      <h3>🏆 المحلات المميزة لدينا</h3>
+    </div>
+    <div class="ads-slider" id="adsSlider">
+      <!-- الإعلانات تُضاف هنا تلقائياً -->
+    </div>
+  </div>
 
   <div class="container">
     <div class="sections" id="sections"></div>
@@ -116,12 +338,131 @@
       "💊 أدوية ومستلزمات طبية"
     ];
 
+    // عناصر DOM
     const secEl = document.getElementById("sections");
     const dropdown = document.getElementById("dropdown");
     const dropdownSelect = document.getElementById("dropdownSelect");
     const prodEl = document.getElementById("products");
     const titleEl = document.getElementById("current-section");
     const refreshBtn = document.getElementById("refresh");
+    const adsSection = document.getElementById("adsSection");
+    const adsSlider = document.getElementById("adsSlider");
+
+    // ========== دالات جديدة ==========
+
+    // جلب إعدادات الموقع
+    async function fetchSettings() {
+      try {
+        const url = `settings.json?ts=${Date.now()}`;
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) return { header_mode: "welcome" };
+        return await res.json();
+      } catch (err) {
+        console.error("خطأ في جلب الإعدادات:", err);
+        return { header_mode: "welcome" };
+      }
+    }
+
+    // جلب المحلات المميزة
+    async function fetchFeaturedShops() {
+      try {
+        const url = `featured_shops.json?ts=${Date.now()}`;
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) return [];
+        return await res.json();
+      } catch (err) {
+        console.error("خطأ في جلب المحلات المميزة:", err);
+        return [];
+      }
+    }
+
+    // عرض الإعلانات
+    async function displayAds() {
+      try {
+        // جلب الإعدادات
+        const settings = await fetchSettings();
+        const headerMode = settings.header_mode || "welcome";
+        
+        // إذا كان الوضع ترحيب فقط، نخفي قسم الإعلانات
+        if (headerMode === "welcome") {
+          adsSection.style.display = "none";
+          return;
+        }
+        
+        // جلب المحلات المميزة
+        const featuredShops = await fetchFeaturedShops();
+        
+        // إذا لم توجد محلات مميزة، نخفي قسم الإعلانات
+        if (!featuredShops || featuredShops.length === 0) {
+          adsSection.style.display = "none";
+          return;
+        }
+        
+        // عرض قسم الإعلانات
+        adsSection.style.display = "block";
+        adsSlider.innerHTML = "";
+        
+        // إضافة كل محل مميز كإعلان
+        featuredShops.forEach(shop => {
+          const adCard = document.createElement("div");
+          adCard.className = "ad-card";
+          adCard.onclick = () => {
+            // عند النقر على الإعلان، نذهب إلى قسم المطاعم ونبحث عن المحل
+            selectRestaurantSection(shop.name);
+          };
+          
+          adCard.innerHTML = `
+            <img class="ad-image" src="${shop.photo}" alt="${shop.name}"
+                 onerror="this.src='https://via.placeholder.com/400x300/7c4dff/ffffff?text=⭐'">
+            <div class="ad-name">${shop.name}</div>
+            <div class="ad-desc">${shop.description || "محل مميز"}</div>
+            <div class="ad-badge">⭐ مميز</div>
+          `;
+          
+          adsSlider.appendChild(adCard);
+        });
+        
+      } catch (err) {
+        console.error("خطأ في عرض الإعلانات:", err);
+        adsSection.style.display = "none";
+      }
+    }
+
+    // اختيار قسم المطاعم والبحث عن المحل
+    function selectRestaurantSection(shopName) {
+      // إخفاء التبويبات وإظهار القائمة المنسدلة
+      secEl.style.display = "none";
+      dropdown.style.display = "block";
+      
+      // اختيار قسم المطاعم
+      const restaurantSection = "🍰 مطاعم وحلويات";
+      dropdownSelect.value = restaurantSection;
+      
+      // عرض القسم
+      showSection(restaurantSection);
+      
+      // البحث عن المحل في القسم بعد تحميل المنتجات
+      setTimeout(() => {
+        const shopCards = document.querySelectorAll('.card');
+        shopCards.forEach(card => {
+          if (card.querySelector('.name').textContent === shopName) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // إضافة تأثير تمييز
+            card.style.boxShadow = "0 0 0 3px #ffd700";
+            card.style.transform = "scale(1.05)";
+            
+            // إزالة التمييز بعد 3 ثواني
+            setTimeout(() => {
+              card.style.boxShadow = "";
+              card.style.transform = "";
+            }, 3000);
+          }
+        });
+      }, 1000);
+    }
+
+    // ========== الدوال الأصلية (معدلة) ==========
 
     // بناء Tabs + خيارات القائمة
     SECTIONS.forEach(sec => {
@@ -308,11 +649,32 @@
       }
     };
 
+    // تحديث الإعلانات عند النقر على زر التحديث
+    refreshBtn.onclick = async () => {
+      const t = titleEl.textContent;
+      if (t.includes("—")) {
+        const afterDash = t.split("—")[1].trim();
+        if (afterDash.includes("/")) {
+          const [section, shop] = afterDash.split("/").map(s => s.trim());
+          showShopProducts(section, shop);
+        } else {
+          showSection(afterDash);
+        }
+      } else {
+        showRandomProducts();
+      }
+      // تحديث الإعلانات أيضاً
+      await displayAds();
+    };
+
     // عند تحميل الصفحة أول مرة
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
       secEl.style.display = "flex";
       dropdown.style.display = "none";
-      showRandomProducts(); // لا تعرض محلات هنا
+      showRandomProducts();
+      
+      // عرض الإعلانات
+      await displayAds();
     });
   </script>
 </body>
