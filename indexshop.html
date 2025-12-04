@@ -74,7 +74,7 @@
     
     /* قسم الإعلانات - كاروسيل جديد */
     .ads-carousel {
-      display: none;
+      display: block; /* تم التعديل */
       position: relative;
       background: linear-gradient(135deg, #1a0b2e 0%, #2d1b69 100%);
       padding: 20px 0 30px;
@@ -723,40 +723,17 @@
     let featuredShops = [];
     let allProducts = [];
 
-    // ========== دالات الكاروسيل ==========
+    // ========== دالات الكاروسيل - الإصدار المُصلح ==========
 
-    // تهيئة الكاروسيل
+    // تهيئة الكاروسيل - تم التبسيط
     async function initCarousel() {
       try {
-        console.log('بدء تهيئة الكاروسيل...');
-        
-        // جلب الإعدادات
-        const settings = await fetchSettings();
-        const headerMode = settings.header_mode || "welcome";
-        console.log('وضع الرأس:', headerMode);
-        
-        if (headerMode === "welcome") {
-          adsCarousel.style.display = "none";
-          return;
-        }
-        
         // جلب المحلات المميزة
         featuredShops = await fetchFeaturedShops();
-        console.log('المحلات المميزة المحملة:', featuredShops.length, featuredShops);
         
         if (!featuredShops || featuredShops.length === 0) {
-          console.log('لا توجد محلات مميزة لعرضها');
           adsCarousel.style.display = "none";
           return;
-        }
-        
-        // جلب المنتجات
-        try {
-          allProducts = await fetchProductsJson();
-          console.log('المنتجات المحملة:', allProducts.length);
-        } catch (e) {
-          console.warn('لا يمكن تحميل المنتجات');
-          allProducts = [];
         }
         
         // عرض الكاروسيل
@@ -768,15 +745,13 @@
         // إنشاء الكاروسيل
         createCarousel();
         
-        console.log('الكاروسيل جاهز للعمل، عدد الشرائح:', featuredShops.length);
-        
       } catch (err) {
         console.error("خطأ في تهيئة الكاروسيل:", err);
         adsCarousel.style.display = "none";
       }
     }
 
-    // إنشاء الكاروسيل
+    // إنشاء الكاروسيل - تم التبسيط
     function createCarousel() {
       // مسح المحتوى القديم
       carouselSlides.innerHTML = "";
@@ -789,12 +764,11 @@
         // إنشاء الشريحة
         const slide = document.createElement("div");
         slide.className = "carousel-slide";
-        slide.dataset.index = index;
         slide.style.cursor = "pointer";
         
         // بيانات المحل
         const shopName = shop.name || "محل غير معروف";
-        const shopPhoto = shop.photo || getDefaultImage(index);
+        const shopPhoto = shop.photo || "https://via.placeholder.com/400x300/7c4dff/ffffff?text=⭐";
         const shopDescription = shop.description || "محل مميز في متجر بتكة";
         
         // إضافة محتوى الشريحة
@@ -804,10 +778,7 @@
               <img class="ad-image" 
                    src="${shopPhoto}" 
                    alt="${shopName}"
-                   loading="lazy"
-                   data-index="${index}"
-                   onload="onCarouselImageLoad(this)"
-                   onerror="onCarouselImageError(this)">
+                   onerror="this.src='https://via.placeholder.com/400x300/7c4dff/ffffff?text=⭐'">
             </div>
             <div class="ad-details">
               <h3 class="ad-name">${shopName}</h3>
@@ -817,17 +788,11 @@
           </div>
         `;
         
-        // حدث النقر
-        slide.addEventListener('click', () => {
-          goToShopProducts(shopName);
-        });
-        
         carouselSlides.appendChild(slide);
         
         // إنشاء نقطة التنقل
         const dot = document.createElement("span");
         dot.className = "carousel-dot";
-        dot.dataset.index = index;
         dot.addEventListener('click', () => goToSlide(index));
         carouselDots.appendChild(dot);
       });
@@ -839,53 +804,17 @@
       startCarousel();
     }
 
-    // دالة للحصول على صورة افتراضية مختلفة لكل محل
-    function getDefaultImage(index) {
-      const colors = ['7c4dff', 'e91e63', '00c2ff', '4CAF50', 'FF9800'];
-      const color = colors[index % colors.length];
-      return `https://via.placeholder.com/400x300/${color}/ffffff?text=محل+${index + 1}`;
-    }
-
-    // حدث تحميل الصورة بنجاح
-    function onCarouselImageLoad(imgElement) {
-      const index = imgElement.dataset.index;
-      console.log(`تم تحميل صورة المحل ${index} بنجاح`);
-      imgElement.style.opacity = "1";
-      imgElement.parentElement.style.background = "rgba(255, 255, 255, 0.05)";
-    }
-
-    // حدث خطأ في تحميل الصورة
-    function onCarouselImageError(imgElement) {
-      const index = imgElement.dataset.index;
-      console.warn(`خطأ في تحميل صورة المحل ${index}:`, imgElement.src);
-      
-      // استخدام صورة افتراضية مختلفة لكل محل
-      imgElement.src = getDefaultImage(parseInt(index));
-      imgElement.onerror = null; // منع حلقات الأخطاء
-      
-      // تطبيق تأثير تحميل
-      imgElement.style.opacity = "0.8";
-      imgElement.parentElement.style.background = "rgba(255, 255, 255, 0.1)";
-      
-      setTimeout(() => {
-        imgElement.style.opacity = "1";
-        imgElement.parentElement.style.background = "rgba(255, 255, 255, 0.05)";
-      }, 300);
-    }
-
-    // تحديث عرض الكاروسيل
+    // تحديث عرض الكاروسيل - الإصلاح الأساسي هنا
     function updateCarousel() {
       if (!carouselSlides || !featuredShops || featuredShops.length === 0) return;
+      
+      // إزالة البكسلات واستخدام النسب المئوية البسيطة
+      carouselSlides.style.transform = `translateX(-${currentSlide * 100}%)`;
       
       // تحديث النقاط النشطة
       document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
         dot.classList.toggle('active', index === currentSlide);
       });
-      
-      // تحديث موضع الشرائح
-      carouselSlides.style.transform = `translateX(-${currentSlide * 100}%)`;
-      
-      console.log('تم تحديث العرض، الشريحة النشطة:', currentSlide);
     }
 
     // الانتقال لشريحة محددة
@@ -904,8 +833,6 @@
       
       // إعادة تعيين المؤقت
       resetCarouselInterval();
-      
-      console.log('انتقال إلى الشريحة:', index);
     }
 
     // الانتقال للشريحة التالية
@@ -923,7 +850,6 @@
       clearInterval(slideInterval);
       if (featuredShops && featuredShops.length > 1) {
         slideInterval = setInterval(nextSlide, 7000);
-        console.log('بدأ التبديل التلقائي');
       }
     }
 
@@ -933,86 +859,12 @@
       startCarousel();
     }
 
-    // التحقق من وجود المحل
-    function checkShopExists(shopName) {
-      if (!shopName) return false;
-      
-      // البحث في جميع المنتجات
-      const existsInProducts = allProducts.some(product => 
-        product.shop && product.shop.trim() === shopName.trim()
-      );
-      
-      // البحث في المحلات المميزة
-      const existsInFeatured = featuredShops.some(shop => 
-        shop && shop.name && shop.name.trim() === shopName.trim()
-      );
-      
-      return existsInProducts || existsInFeatured;
-    }
-
-    // الانتقال المباشر لمنتجات المحل
-    function goToShopProducts(shopName) {
-      console.log('الانتقال إلى منتجات المحل:', shopName);
-      
-      // 1. إخفاء الأقسام وإظهار القائمة المنسدلة
-      secEl.style.display = "none";
-      dropdown.style.display = "block";
-      
-      // 2. اختيار قسم المطاعم
-      const restaurantSection = "🍰 مطاعم وحلويات";
-      dropdownSelect.value = restaurantSection;
-      
-      // 3. إظهار قسم المطاعم
-      showSection(restaurantSection);
-      
-      // 4. بعد تحميل القسم، ننتقل مباشرة للمحل
-      setTimeout(() => {
-        const shopCards = document.querySelectorAll('.card');
-        let found = false;
-        
-        shopCards.forEach(card => {
-          const cardTitle = card.querySelector('.name')?.textContent;
-          if (cardTitle === shopName) {
-            found = true;
-            
-            // تمييز البطاقة
-            card.style.boxShadow = "0 0 0 3px #ffd700";
-            card.style.transform = "scale(1.05)";
-            
-            // إضافة حدث النقر للبطاقة
-            card.onclick = () => {
-              showShopProducts(restaurantSection, shopName);
-            };
-            
-            // تمرير للبطاقة
-            setTimeout(() => {
-              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              card.click();
-            }, 500);
-            
-            // إزالة التمييز
-            setTimeout(() => {
-              card.style.boxShadow = "";
-              card.style.transform = "";
-            }, 3500);
-          }
-        });
-        
-        // إذا لم نجد المحل
-        if (!found) {
-          setTimeout(() => {
-            alert(`المحل "${shopName}" غير موجود في قسم المطاعم.`);
-          }, 1500);
-        }
-      }, 1000);
-    }
-
     // ========== الدوال المساعدة ==========
 
-    // جلب إعدادات الموقع
-    async function fetchSettings() {
+    // جلب المحلات المميزة - تم التبسيط
+    async function fetchFeaturedShops() {
       try {
-        const url = `settings.json?ts=${Date.now()}`;
+        const url = `featured_shops.json?ts=${Date.now()}`;
         const res = await fetch(url, { 
           cache: "no-store",
           headers: {
@@ -1020,62 +872,12 @@
             'Cache-Control': 'no-cache'
           }
         });
-        if (!res.ok) return { header_mode: "welcome" };
-        return await res.json();
-      } catch (err) {
-        console.error("خطأ في جلب الإعدادات:", err);
-        return { header_mode: "welcome" };
-      }
-    }
-
-    // جلب المحلات المميزة
-    async function fetchFeaturedShops() {
-      try {
-        // إضافة timestamp عشوائي لمنع التخزين المؤقت
-        const random = Math.random().toString(36).substring(7);
-        const url = `featured_shops.json?ts=${Date.now()}&r=${random}`;
         
-        console.log('جلب المحلات المميزة من:', url);
-        
-        const res = await fetch(url, { 
-          cache: "no-store",
-          headers: {
-            'Accept': 'application/json',
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache'
-          }
-        });
-        
-        console.log('استجابة المحلات المميزة:', res.status);
-        
-        if (!res.ok) {
-          console.error('فشل في جلب المحلات المميزة:', res.status);
-          return [];
-        }
+        if (!res.ok) return [];
         
         const shops = await res.json();
-        console.log('المحلات المستلمة:', shops);
-        
-        // التحقق من بيانات كل محل
-        const validatedShops = shops.map((shop, index) => {
-          if (!shop || typeof shop !== 'object') {
-            console.warn(`المحل في الفهرس ${index} غير صالح`);
-            return null;
-          }
-          
-          // التأكد من وجود الحقول الأساسية
-          return {
-            id: shop.id || `shop-${index}`,
-            name: shop.name || `محل ${index + 1}`,
-            photo: shop.photo || getDefaultImage(index),
-            description: shop.description || "محل مميز في متجر بتكة",
-            added_date: shop.added_date || new Date().toISOString(),
-            active: shop.active !== false
-          };
-        }).filter(shop => shop !== null && shop.active);
-        
-        console.log('المحلات المصححة:', validatedShops);
-        return validatedShops;
+        // تصفية المحلات النشطة فقط
+        return shops.filter(shop => shop && shop.active !== false);
       } catch (err) {
         console.error("خطأ في جلب المحلات المميزة:", err);
         return [];
@@ -1138,8 +940,7 @@
       card.innerHTML = `
         <div class="image-container">
           <img class="thumb" src="${photo}" alt="${title}"
-               loading="lazy"
-               onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/ffffff/000000?text=BTikka'">
+               onerror="this.src='https://via.placeholder.com/400x300/ffffff/000000?text=BTikka'">
         </div>
         <div class="content">
           <h3 class="name">${title}</h3>
@@ -1348,34 +1149,7 @@
       adsCarousel.addEventListener("mouseleave", () => {
         startCarousel();
       });
-      
-      // إعادة تعيين حجم الكاروسيل عند تغيير حجم النافذة
-      window.addEventListener('resize', () => {
-        updateCarousel();
-      });
-      
-      // تشخيص بعد التحميل
-      setTimeout(() => {
-        console.log('=== تشخيص نهائي ===');
-        console.log('عدد المحلات المميزة:', featuredShops.length);
-        console.log('الشريحة النشطة:', currentSlide);
-        
-        // التحقق من جميع الصور
-        document.querySelectorAll('.ad-image').forEach((img, i) => {
-          console.log(`صورة المحل ${i}:`, {
-            src: img.src,
-            complete: img.complete,
-            naturalWidth: img.naturalWidth,
-            naturalHeight: img.naturalHeight,
-            loaded: img.complete && img.naturalWidth > 0
-          });
-        });
-      }, 3000);
     });
-
-    // جعل الدوال متاحة في النطاق العام
-    window.onCarouselImageLoad = onCarouselImageLoad;
-    window.onCarouselImageError = onCarouselImageError;
   </script>
 </body>
 </html>
