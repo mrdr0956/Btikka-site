@@ -23,40 +23,19 @@
       padding: 40px 20px;
       text-align: center;
       border-bottom: 1px solid var(--border);
-
-      /* خلفية أنيقة متدرجة */
       background: radial-gradient(circle at 20% 30%, rgba(124,77,255,0.35), transparent 60%),
                   radial-gradient(circle at 80% 20%, rgba(233,30,99,0.35), transparent 60%),
                   linear-gradient(135deg, #1a1a1f, #0f0f12 70%);
     }
-
-    h1 {
-      margin: 0 0 15px;
-      font-size: 28px;
-      color: #fff;
-      font-weight: bold;
-    }
-
-    .lead {
-      margin: 6px 0;
-      color: #e0e0e0;
-      font-size: 16px;
-    }
-
-    /* كلمة BTikka بشكل جميل */
+    h1 { margin: 0 0 15px; font-size: 28px; color: #fff; font-weight: bold; }
+    .lead { margin: 6px 0; color: #e0e0e0; font-size: 16px; }
     .brand-badge {
       background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      color: #fff;
-      padding: 6px 16px;
-      border-radius: 999px;
-      font-size: 16px;
-      font-weight: bold;
-      letter-spacing: 1px;
+      color: #fff; padding: 6px 16px; border-radius: 999px;
+      font-size: 16px; font-weight: bold; letter-spacing: 1px;
       box-shadow: 0 8px 30px rgba(124,77,255,.4);
       animation: glow 2s infinite alternate;
     }
-
-    /* حركة توهج */
     @keyframes glow {
       from { box-shadow: 0 0 10px rgba(124,77,255,.4); }
       to   { box-shadow: 0 0 20px rgba(233,30,99,.6); }
@@ -117,11 +96,11 @@
     /* Animations */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes slideDown {
       from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .products-header {
@@ -167,6 +146,7 @@
     <p class="lead">وجهتك الأولى للتسوق المنزلي بسهولة وراحة ✨</p>
     <p class="lead">اختر القسم الذي تريد التسوق منه 👇</p>
   </header>
+
   <div class="container">
     <div class="sections" id="sections"></div>
     <div class="dropdown" id="dropdown">
@@ -184,14 +164,14 @@
 
   <script>
     const SECTIONS = [
-    "🍰 مطاعم وحلويات",
-    "🛍️ سوبر ماركت – مواد غذائية",
-    "⚡ أدوات كهربائي",
-    "🔌 إكسسوارات إلكترونية",
-	"🍽️ ادوات بلاستيكية",
-    "🎁 هدايا",
-    "🏗️ مواد بناء وتشطيب",
-    "💊 أدوية ومستلزمات طبية"
+      "🍰 مطاعم وحلويات",
+      "🛍️ سوبر ماركت – مواد غذائية",
+      "⚡ أدوات كهربائي",
+      "🔌 إكسسوارات إلكترونية",
+      "🍽️ ادوات بلاستيكية",
+      "🎁 هدايا",
+      "🏗️ مواد بناء وتشطيب",
+      "💊 أدوية ومستلزمات طبية"
     ];
 
     const secEl = document.getElementById("sections");
@@ -207,6 +187,7 @@
       card.className = "section-card";
       card.textContent = sec;
       card.onclick = () => {
+        // إخفاء الأقسام وإظهار القائمة المنسدلة عند الاختيار
         secEl.style.display = "none";
         dropdown.style.display = "block";
         dropdownSelect.value = sec;
@@ -226,6 +207,7 @@
       showProducts(sec);
     };
 
+    // جلب المنتجات من الملف
     async function fetchProductsJson() {
       const url = `products.json?ts=${Date.now()}`;
       const res = await fetch(url, { cache: "no-store" });
@@ -233,30 +215,57 @@
       return await res.json();
     }
 
+    // عرض منتجين عشوائيًا من كل قسم عند الدخول
+    async function showRandomProducts() {
+      titleEl.textContent = "منتجات مختارة عشوائيًا ✨";
+      prodEl.innerHTML = "";
+      try {
+        const products = await fetchProductsJson();
+
+        // تجميع المنتجات حسب القسم
+        const grouped = {};
+        products.forEach(p => {
+          const sec = (p.section || "").trim();
+          if (!grouped[sec]) grouped[sec] = [];
+          grouped[sec].push(p);
+        });
+
+        // اختيار منتجين من كل قسم
+        Object.keys(grouped).forEach(sec => {
+          const arr = grouped[sec];
+          if (arr.length > 0) {
+            const shuffled = [...arr].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 2);
+            selected.forEach(renderProductCard);
+          }
+        });
+
+        // إذا ما ظهر شيء (مثلاً الملف فارغ)
+        if (!prodEl.children.length) {
+          prodEl.innerHTML = `<div class="empty">لا توجد منتجات متاحة الآن. ✨</div>`;
+        }
+      } catch (err) {
+        prodEl.innerHTML = `<div class="empty">حدث خطأ في جلب المنتجات. حاول مجددًا.</div>`;
+        console.error(err);
+      }
+    }
+
+    // عرض منتجات قسم محدد
     async function showProducts(section) {
       titleEl.textContent = `المنتجات — ${section}`;
       prodEl.innerHTML = "";
       try {
         const products = await fetchProductsJson();
-        const filtered = products.filter(p => (p.section || "").trim() === section.trim());
+        const filtered = products.filter(
+          p => (p.section || "").trim() === section.trim()
+        );
+
         if (filtered.length === 0) {
           prodEl.innerHTML = `<div class="empty">✨ قريبًا سوف تنزل المنتجات في قسم "${section}" ✨</div>`;
           return;
         }
-        filtered.forEach(p => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            <img class="thumb" src="${p.photo}" alt="${p.name}"
-                 onerror="this.src='https://via.placeholder.com/400x300/ffffff/000000?text=BTikka'">
-            <div class="content">
-              <h3 class="name">${p.name}</h3>
-              <p class="desc">${p.description || ""}</p>
-              <span class="price">السعر: ${p.price} ل.س</span>
-            </div>
-          `;
-          prodEl.appendChild(card);
-        });
+
+        filtered.forEach(renderProductCard);
 
         prodEl.scrollIntoView({ behavior: "smooth", block: "start" });
       } catch (err) {
@@ -265,14 +274,40 @@
       }
     }
 
+    // دالة مساعدة: بناء كرت المنتج
+    function renderProductCard(p) {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img class="thumb" src="${p.photo}" alt="${p.name}"
+             onerror="this.src='https://via.placeholder.com/400x300/ffffff/000000?text=BTikka'">
+        <div class="content">
+          <h3 class="name">${p.name}</h3>
+          <p class="desc">${p.description || ""}</p>
+          <span class="price">السعر: ${p.price} ل.س</span>
+        </div>
+      `;
+      prodEl.appendChild(card);
+    }
+
     // زر التحديث: يعيد تحميل القسم الحالي
     refreshBtn.onclick = () => {
       if (titleEl.textContent.includes("—")) {
         const section = titleEl.textContent.split("—")[1].trim();
         showProducts(section);
+      } else {
+        // إذا كنا في صفحة "منتجات مختارة عشوائيًا"
+        showRandomProducts();
       }
     };
+
+    // عند تحميل الصفحة أول مرة
+    document.addEventListener("DOMContentLoaded", () => {
+      // الأقسام تظهر، والـ dropdown مخفي. نعرض منتجات عشوائية.
+      secEl.style.display = "flex";
+      dropdown.style.display = "none";
+      showRandomProducts();
+    });
   </script>
 </body>
 </html>
-
