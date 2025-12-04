@@ -1,104 +1,122 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <title>بتكة Btikka — المتجر</title>
+  <meta charset="UTF-8">
+  <title>متجر بتكة 🛍️</title>
   <style>
-    body { font-family: Arial, sans-serif; direction: rtl; background: #f9f9f9; margin: 0; }
-    header { background: #d63384; color: #fff; padding: 16px; text-align: center; }
-    .sections { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; justify-content: center; }
-    .sec-btn { background: #d63384; color: #fff; border: none; padding: 10px 14px; border-radius: 8px; cursor: pointer; }
-    .sec-btn:hover { background: #a02060; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; padding: 12px; }
-    .card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 12px; }
-    .card img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; }
-    .empty { text-align: center; color: #666; padding: 20px; }
-    .active { outline: 2px solid #a02060; }
+    body {
+      font-family: "Tahoma", sans-serif;
+      direction: rtl;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #333;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+    }
+    .section {
+      margin: 30px;
+    }
+    .section h2 {
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+    }
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      width: 220px;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .card img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    .card h3 {
+      margin: 10px 0 5px;
+      font-size: 18px;
+    }
+    .card p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #555;
+    }
+    .price {
+      font-weight: bold;
+      color: #e91e63;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>مرحبًا بك في متجر بتكة 🛍️ (BTikka)</h1>
-    <p>وجهتك الأولى للتسوق الإلكتروني بسهولة وراحة ✨</p>
-    <p>اختر القسم الذي تريد التسوق منه 👇</p>
+    <h1>🛍️ متجر بتكة (Btikka)</h1>
   </header>
 
-  <div class="sections" id="sections"></div>
-  <div id="currentSection" style="padding: 0 12px; font-weight: bold;"></div>
-  <div class="grid" id="products"></div>
+  <div id="sections"></div>
 
   <script>
-    const SECTIONS = [
-      "مطاعم وحلويات",
-      "سوبر ماركت – مواد غذائية",
-      "أدوات كهربائية",
-      "إكسسوارات إلكترونية",
-      "مستلزمات المائدة والبلاستيكيات",
-      "هدايا مميزة",
-      "مواد بناء وتشطيب",
-    ];
-    let allProducts = [];
-    let activeSection = null;
+    async function loadProducts() {
+      try {
+        const res = await fetch("products.json"); // تأكد أن الملف موجود بجانب indexshop.html
+        const products = await res.json();
 
-    async function fetchProducts() {
-      // الملف يُخدم عبر GitHub Pages تلقائيًا
-      const res = await fetch("products.json");
-      allProducts = await res.json();
-    }
+        // الأقسام
+        const sections = [
+          "مطاعم وحلويات",
+          "سوبر ماركت – مواد غذائية",
+          "أدوات كهربائية",
+          "إكسسوارات إلكترونية",
+          "مستلزمات المائدة والبلاستيكيات",
+          "هدايا مميزة",
+          "مواد بناء وتشطيب"
+        ];
 
-    function renderSections() {
-      const wrap = document.getElementById("sections");
-      wrap.innerHTML = "";
-      SECTIONS.forEach(sec => {
-        const btn = document.createElement("button");
-        btn.className = "sec-btn";
-        btn.textContent = sec;
-        btn.onclick = () => selectSection(sec, btn);
-        wrap.appendChild(btn);
-      });
-    }
+        const container = document.getElementById("sections");
 
-    function selectSection(sectionName, btnEl) {
-      activeSection = sectionName;
-      document.querySelectorAll(".sec-btn").forEach(b => b.classList.remove("active"));
-      btnEl.classList.add("active");
-      document.getElementById("currentSection").textContent = `القسم الحالي: ${sectionName}`;
-      renderProducts();
-    }
+        sections.forEach(section => {
+          const secProducts = products.filter(p => p.section === section);
+          if (secProducts.length > 0) {
+            const secDiv = document.createElement("div");
+            secDiv.className = "section";
+            secDiv.innerHTML = `<h2>${section}</h2>`;
 
-    function renderProducts() {
-      const grid = document.getElementById("products");
-      grid.innerHTML = "";
-      const filtered = allProducts.filter(p => p.section === activeSection);
+            const prodDiv = document.createElement("div");
+            prodDiv.className = "products";
 
-      if (filtered.length === 0) {
-        grid.innerHTML = `<div class="empty">لا توجد منتجات في هذا القسم حتى الآن.</div>`;
-        return;
-      }
+            secProducts.forEach(p => {
+              const card = document.createElement("div");
+              card.className = "card";
+              card.innerHTML = `
+                <img src="${p.photo}" alt="${p.name}">
+                <h3>${p.name}</h3>
+                <p>${p.description}</p>
+                <p class="price">السعر: ${p.price} ل.س</p>
+              `;
+              prodDiv.appendChild(card);
+            });
 
-      for (const p of filtered) {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          ${p.photo ? `<img src="${p.photo}" alt="${p.name}" />` : ""}
-          <h3>${p.name}</h3>
-          <p>${p.description || ""}</p>
-          <p><strong>السعر:</strong> ${p.price}</p>
-        `;
-        grid.appendChild(card);
+            secDiv.appendChild(prodDiv);
+            container.appendChild(secDiv);
+          }
+        });
+      } catch (err) {
+        console.error("خطأ في تحميل المنتجات:", err);
       }
     }
 
-    async function init() {
-      renderSections();
-      await fetchProducts();
-      // افتراضيًا نفتح "أدوات كهربائية"
-      const defaultSection = "أدوات كهربائية";
-      const btns = Array.from(document.querySelectorAll(".sec-btn"));
-      const btn = btns.find(b => b.textContent === defaultSection) || btns[0];
-      if (btn) selectSection(btn.textContent, btn);
-    }
-    init();
+    loadProducts();
   </script>
 </body>
 </html>
