@@ -15,5 +15,13 @@
     "description": "فول معلب خولاني",
     "type": "معلبات",
     "price": "5700"
+  },
+  {
+    "section": "⚡ أدوات كهربائي",
+    "name": "استشوار",
+    "photo": "https://mrdr0956.github.io/Btikka-site/images/a.jpg",
+    "description": "صيني متل خولاني",
+    "type": "حلاقة",
+    "price": "5000"
   }
 ]
