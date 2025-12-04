@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "kind": "shop",
+    "section": "🍰 مطاعم وحلويات",
+    "shop": "خولاني",
+    "photo": "https://mrdr0956.github.io/Btikka-site/images/shop.jpg",
+    "description": "بروستد",
+    "type": "ماكولات جاهزة"
+  }
+]
