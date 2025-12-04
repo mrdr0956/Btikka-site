@@ -43,5 +43,13 @@
     "description": "مفول متل خولاني",
     "type": "معلب متل خولاني",
     "price": "000"
+  },
+  {
+    "kind": "shop",
+    "section": "🍰 مطاعم وحلويات",
+    "shop": "حيدر",
+    "photo": "https://mrdr0956.github.io/Btikka-site/images/v.jpg",
+    "description": "l;h,gh",
+    "type": "lgh"
   }
 ]
