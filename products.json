@@ -61,5 +61,15 @@
     "type": "معلبات",
     "price": "6767676",
     "shop": "حيدر"
+  },
+  {
+    "kind": "product",
+    "section": "🍰 مطاعم وحلويات",
+    "name": "استشوار",
+    "photo": "https://mrdr0956.github.io/Btikka-site/images/ش.jpg",
+    "description": "يل\\",
+    "type": "بلبلب",
+    "price": "5656",
+    "shop": "حيدر"
   }
 ]
