@@ -51,5 +51,15 @@
     "photo": "https://mrdr0956.github.io/Btikka-site/images/v.jpg",
     "description": "l;h,gh",
     "type": "lgh"
+  },
+  {
+    "kind": "product",
+    "section": "🍰 مطاعم وحلويات",
+    "name": "فول",
+    "photo": "https://mrdr0956.github.io/Btikka-site/images/l.jpg",
+    "description": "فول سوداني",
+    "type": "معلبات",
+    "price": "6767676",
+    "shop": "حيدر"
   }
 ]
