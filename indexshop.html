@@ -15,14 +15,9 @@
       --accent3: #00c2ff;
       --border: #2a2a31;
     }
-    body {
-      margin: 0; font-family: "Tahoma", system-ui, sans-serif; direction: rtl;
-      background: var(--bg); color: var(--text);
-    }
+    body { margin: 0; font-family: "Tahoma", system-ui, sans-serif; direction: rtl; background: var(--bg); color: var(--text); }
     header {
-      padding: 40px 20px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
+      padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--border);
       background: radial-gradient(circle at 20% 30%, rgba(124,77,255,0.35), transparent 60%),
                   radial-gradient(circle at 80% 20%, rgba(233,30,99,0.35), transparent 60%),
                   linear-gradient(135deg, #1a1a1f, #0f0f12 70%);
@@ -36,104 +31,55 @@
       box-shadow: 0 8px 30px rgba(124,77,255,.4);
       animation: glow 2s infinite alternate;
     }
-    @keyframes glow {
-      from { box-shadow: 0 0 10px rgba(124,77,255,.4); }
-      to   { box-shadow: 0 0 20px rgba(233,30,99,.6); }
-    }
+    @keyframes glow { from { box-shadow: 0 0 10px rgba(124,77,255,.4); } to { box-shadow: 0 0 20px rgba(233,30,99,.6); } }
 
     .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
 
     /* Tabs */
     .sections {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 18px;
-      animation: fadeIn 0.6s ease;
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+      margin-top: 18px; animation: fadeIn 0.6s ease;
     }
     .section-card {
-      background: #191922;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 16px;
-      cursor: pointer;
-      transition: all .25s ease;
-      color: #eaeaf3;
+      background: #191922; border: 1px solid var(--border); border-radius: 8px;
+      padding: 10px 16px; cursor: pointer; transition: all .25s ease; color: #eaeaf3;
     }
-    .section-card:hover {
-      transform: translateY(-3px);
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      color: #fff;
-    }
+    .section-card:hover { transform: translateY(-3px); background: linear-gradient(135deg, var(--accent1), var(--accent2)); color: #fff; }
 
     /* Dropdown */
-    .dropdown {
-      display: none;
-      margin: 20px auto;
-      text-align: center;
-      animation: slideDown 0.5s ease;
-    }
+    .dropdown { display: none; margin: 20px auto; text-align: center; animation: slideDown 0.5s ease; }
     .dropdown select {
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: #191922;
-      color: #fff;
-      font-size: 15px;
-      min-width: 240px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.25);
-      transition: all .3s ease;
-      text-align: center;
-      text-align-last: center;
+      padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
+      background: #191922; color: #fff; font-size: 15px; min-width: 240px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25); transition: all .3s ease;
+      text-align: center; text-align-last: center;
     }
-    .dropdown select option {
-      color: #000;
-      background: #fff;
-      text-align: center;
-    }
+    .dropdown select option { color: #000; background: #fff; text-align: center; }
 
     /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .products-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-top: 24px; margin-bottom: 12px;
-    }
+    .products-header { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; margin-bottom: 12px; }
     .products-header h2 { margin: 0; font-size: 20px; }
     .refresh {
       background: linear-gradient(135deg, var(--accent3), var(--accent2));
       color: #fff; border: none; border-radius: 8px; padding: 8px 12px;
       cursor: pointer; font-weight: bold;
     }
-    .products {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
-    }
+    .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
     .card {
       background: var(--card); border: 1px solid var(--border); border-radius: 12px;
       overflow: hidden; transition: all .2s ease;
     }
     .card:hover { transform: translateY(-3px); border-color: #3b3b45; }
-    .thumb { width: 100%; height: 180px; object-fit: contain; background: #fff; }
+    .thumb { width: 100%; height: 180px; object-fit: cover; background: #fff; }
     .content { padding: 10px; }
-    .name { margin: 4px 0; font-size: 15px; }
+    .name { margin: 4px 0; font-size: 16px; font-weight: bold; }
     .desc { margin: 4px 0 8px; font-size: 13px; color: var(--muted); min-height: 32px; }
-    .price {
-      display: inline-block; font-weight: bold; color: #ff77a9;
-      background: rgba(233,30,99,.08); border-radius: 6px; padding: 4px 8px;
-    }
-    .empty {
-      color: var(--muted); background: #141419; border: 1px dashed #34343b;
-      border-radius: 10px; padding: 14px; text-align: center; grid-column: 1 / -1;
-    }
+    .price { display: inline-block; font-weight: bold; color: #ff77a9; background: rgba(233,30,99,.08); border-radius: 6px; padding: 4px 8px; }
+    .badge { display:inline-block; background:#22232b; color:#b6b7c0; border:1px solid #2f3037; border-radius:6px; padding:3px 8px; font-size:12px; margin-top:6px; }
+    .empty { color: var(--muted); background: #141419; border: 1px dashed #34343b; border-radius: 10px; padding: 14px; text-align: center; grid-column: 1 / -1; }
     footer { text-align: center; color: var(--muted); padding: 20px; }
   </style>
 </head>
@@ -183,11 +129,10 @@
       card.className = "section-card";
       card.textContent = sec;
       card.onclick = () => {
-        // إخفاء الأقسام وإظهار القائمة المنسدلة عند الاختيار
         secEl.style.display = "none";
         dropdown.style.display = "block";
         dropdownSelect.value = sec;
-        showProducts(sec);
+        showSection(sec);
       };
       secEl.appendChild(card);
 
@@ -197,46 +142,55 @@
       dropdownSelect.appendChild(option);
     });
 
-    // تغيير القسم من القائمة
     dropdownSelect.onchange = () => {
       const sec = dropdownSelect.value;
-      showProducts(sec);
+      showSection(sec);
     };
 
-    // جلب المنتجات من الملف
     async function fetchProductsJson() {
-      const url = `products.json?ts=${Date.now()}`; // كسر الكاش
+      const url = `products.json?ts=${Date.now()}`;
       const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) throw new Error("فشل تحميل المنتجات");
       return await res.json();
     }
 
-    // دالة مساعدة: بناء كرت المنتج
-    function renderProductCard(p) {
+    function renderCard({ title, subtitle, photo, description, price, badge, onClick }) {
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
-        <img class="thumb" src="${p.photo}" alt="${p.name}"
+        <img class="thumb" src="${photo}" alt="${title}"
              onerror="this.src='https://via.placeholder.com/400x300/ffffff/000000?text=BTikka'">
         <div class="content">
-          <h3 class="name">${p.name}</h3>
-          <p class="desc">${p.description || ""}</p>
-          <span class="price">السعر: ${p.price} ل.س</span>
+          <h3 class="name">${title}</h3>
+          ${subtitle ? `<div class="badge">${subtitle}</div>` : ""}
+          <p class="desc">${description || ""}</p>
+          ${price ? `<span class="price">السعر: ${price} ل.س</span>` : ""}
+          ${badge ? `<div class="badge">${badge}</div>` : ""}
         </div>
       `;
+      if (onClick) {
+        card.style.cursor = "pointer";
+        card.onclick = onClick;
+      }
       prodEl.appendChild(card);
     }
 
-    // عرض 16 منتج عشوائي عند الدخول
+    // عند الدخول: منتجات عشوائية فقط من النوع product (استبعاد المحلات)
     async function showRandomProducts() {
       titleEl.textContent = "منتجات مختارة عشوائيًا ✨";
       prodEl.innerHTML = "";
       try {
-        const products = await fetchProductsJson();
-        const shuffled = [...products].sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 16); // 16 منتج فقط
-        selected.forEach(renderProductCard);
-
+        const items = await fetchProductsJson();
+        const productsOnly = items.filter(i => (i.kind || "product") === "product");
+        const shuffled = [...productsOnly].sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 16);
+        selected.forEach(p => renderCard({
+          title: p.name,
+          photo: p.photo,
+          description: p.description,
+          price: p.price,
+          badge: p.type
+        }));
         if (!prodEl.children.length) {
           prodEl.innerHTML = `<div class="empty">لا توجد منتجات متاحة الآن. ✨</div>`;
         }
@@ -246,22 +200,59 @@
       }
     }
 
-    // عرض منتجات قسم محدد
-    async function showProducts(section) {
+    // عرض القسم حسب المنطق المطلوب
+    async function showSection(section) {
       titleEl.textContent = `المنتجات — ${section}`;
       prodEl.innerHTML = "";
       try {
-        const products = await fetchProductsJson();
-        const filtered = products.filter(
-          p => (p.section || "").trim() === section.trim()
-        );
+        const items = await fetchProductsJson();
+        const secItems = items.filter(i => (i.section || "").trim() === section.trim());
 
-        if (filtered.length === 0) {
-          prodEl.innerHTML = `<div class="empty">✨ قريبًا سوف تنزل المنتجات في قسم "${section}" ✨</div>`;
-          return;
+        // مطاعم وحلويات: اعرض المحلات أولًا (kind="shop")
+        if (section.includes("مطاعم وحلويات")) {
+          const shops = secItems.filter(i => i.kind === "shop");
+          const products = secItems.filter(i => (i.kind || "product") === "product");
+
+          if (shops.length === 0 && products.length === 0) {
+            prodEl.innerHTML = `<div class="empty">✨ قريبًا سوف تنزل المحلات والمنتجات في قسم "${section}" ✨</div>`;
+            return;
+          }
+
+          // اعرض المحلات كبطاقات قابلة للنقر
+          shops.forEach(shop => renderCard({
+            title: shop.shop,
+            subtitle: shop.type,
+            photo: shop.photo,
+            description: shop.description,
+            badge: "محل",
+            onClick: () => showShopProducts(section, shop.shop)
+          }));
+
+          // إذا لا توجد محلات لكن توجد منتجات مرتبطة بدون shop، اعرضها كمنتجات عامة
+          if (shops.length === 0 && products.length > 0) {
+            products.forEach(p => renderCard({
+              title: p.name,
+              photo: p.photo,
+              description: p.description,
+              price: p.price,
+              badge: p.type
+            }));
+          }
+        } else {
+          // باقي الأقسام: اعرض المنتجات فقط (استثناء أي عناصر kind="shop")
+          const products = secItems.filter(i => (i.kind || "product") === "product");
+          if (products.length === 0) {
+            prodEl.innerHTML = `<div class="empty">✨ قريبًا سوف تنزل المنتجات في قسم "${section}" ✨</div>`;
+            return;
+          }
+          products.forEach(p => renderCard({
+            title: p.name,
+            photo: p.photo,
+            description: p.description,
+            price: p.price,
+            badge: p.type
+          }));
         }
-
-        filtered.forEach(renderProductCard);
 
         prodEl.scrollIntoView({ behavior: "smooth", block: "start" });
       } catch (err) {
@@ -270,11 +261,48 @@
       }
     }
 
-    // زر التحديث: يعيد تحميل القسم الحالي أو المنتجات العشوائية
+    // عرض منتجات محل محدد داخل قسم المطاعم
+    async function showShopProducts(section, shopName) {
+      titleEl.textContent = `منتجات — ${section} / ${shopName}`;
+      prodEl.innerHTML = "";
+      try {
+        const items = await fetchProductsJson();
+        const products = items.filter(
+          i => (i.section || "").trim() === section.trim() &&
+               (i.kind || "product") === "product" &&
+               (i.shop || "").trim() === shopName.trim()
+        );
+
+        if (products.length === 0) {
+          prodEl.innerHTML = `<div class="empty">لا توجد منتجات لهذا المحل حاليًا.</div>`;
+          return;
+        }
+
+        products.forEach(p => renderCard({
+          title: p.name,
+          photo: p.photo,
+          description: p.description,
+          price: p.price,
+          badge: p.type
+        }));
+      } catch (err) {
+        prodEl.innerHTML = `<div class="empty">حدث خطأ في جلب المنتجات. حاول مجددًا.</div>`;
+        console.error(err);
+      }
+    }
+
+    // زر التحديث
     refreshBtn.onclick = () => {
-      if (titleEl.textContent.includes("—")) {
-        const section = titleEl.textContent.split("—")[1].trim();
-        showProducts(section);
+      const t = titleEl.textContent;
+      if (t.includes("—")) {
+        const afterDash = t.split("—")[1].trim();
+        // إذا كنا داخل محل: "منتجات — القسم / المحل"
+        if (afterDash.includes("/")) {
+          const [section, shop] = afterDash.split("/").map(s => s.trim());
+          showShopProducts(section, shop);
+        } else {
+          showSection(afterDash);
+        }
       } else {
         showRandomProducts();
       }
@@ -282,10 +310,9 @@
 
     // عند تحميل الصفحة أول مرة
     document.addEventListener("DOMContentLoaded", () => {
-      // الأقسام تظهر، والـ dropdown مخفي. نعرض منتجات عشوائية.
       secEl.style.display = "flex";
       dropdown.style.display = "none";
-      showRandomProducts();
+      showRandomProducts(); // لا تعرض محلات هنا
     });
   </script>
 </body>
