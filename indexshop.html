@@ -85,6 +85,11 @@
       font-weight: bold;
       color: #e91e63;
     }
+    .empty {
+      font-size: 18px;
+      color: #777;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -127,7 +132,7 @@
       prodContainer.innerHTML = ""; // تفريغ المنتجات السابقة
 
       if (filtered.length === 0) {
-        prodContainer.innerHTML = `<p>لا توجد منتجات في هذا القسم حالياً.</p>`;
+        prodContainer.innerHTML = `<p class="empty">✨ قريبًا سوف تنزل المنتجات في قسم "${section}" ✨</p>`;
         return;
       }
 
