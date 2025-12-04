@@ -33,11 +33,11 @@
     }
     .brand-badge {
       background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      color: #fff; padding: 6px 12px; border-radius: 999px; font-size: 12px;
+      color: #fff; padding: 6px 12px; border-radius: 999px; font-size: 14px;
       box-shadow: 0 8px 30px rgba(233,30,99,.25);
     }
     h1 { margin: 0 0 8px; font-size: 28px; }
-    .lead { margin: 4px 0; color: var(--muted); }
+    .lead { margin: 6px 0; color: var(--muted); font-size: 16px; }
     .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
     .sections {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -50,13 +50,7 @@
       transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
       position: relative; overflow: hidden;
     }
-    .section-card::before {
-      content: ""; position: absolute; inset: -1px;
-      background: linear-gradient(135deg, rgba(124,77,255,.15), rgba(0,194,255,.08));
-      opacity: 0; transition: opacity .25s ease;
-    }
     .section-card:hover { transform: translateY(-4px); border-color: #3b3b45; }
-    .section-card:hover::before { opacity: 1; }
     .section-title { font-size: 15px; margin: 0; color: #eaeaf3; }
     .products-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -78,7 +72,8 @@
     }
     .card:hover { transform: translateY(-3px); border-color: #3b3b45; box-shadow: 0 10px 28px rgba(0,0,0,.35); }
     .thumb {
-      width: 100%; height: 160px; object-fit: cover; background: #0d0d11;
+      width: 100%; height: 200px; object-fit: contain; background: #fff;
+      display: block; margin: 0 auto;
     }
     .content { padding: 12px; }
     .name { margin: 4px 0 2px; font-size: 16px; }
@@ -97,12 +92,12 @@
 <body>
   <header>
     <div class="brand">
-      <span class="brand-badge">BTikka</span>
+      <span class="brand-badge">😊 BTikka</span>
       <span>متجر موثوق للتسوق السريع</span>
     </div>
-    <h1>مرحبًا بك في متجر بتكة 🛍️ (BTikka)</h1>
-    <p class="lead">وجهتك الأولى للتسوق الإلكتروني بسهولة وراحة ✨</p>
-    <p class="lead">اختر القسم الذي تريد التسوق منه 👇</p>
+    <h1>😊 مرحبًا بك في متجر بتكة 🛍️ (BTikka)</h1>
+    <p class="lead">😊 وجهتك الأولى للتسوق المنزلي بسهولة وراحة ✨</p>
+    <p class="lead">😊 اختر القسم الذي تريد التسوق منه 👇</p>
   </header>
 
   <div class="container">
@@ -168,7 +163,8 @@
           const card = document.createElement("div");
           card.className = "card";
           card.innerHTML = `
-            <img class="thumb" src="${p.photo}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x300/141419/ffffff?text=BTikka'">
+            <img class="thumb" src="${p.photo}" alt="${p.name}"
+                 onerror="this.src='https://via.placeholder.com/400x300/ffffff/000000?text=BTikka'">
             <div class="content">
               <h3 class="name">${p.name}</h3>
               <p class="desc">${p.description || ""}</p>
@@ -178,7 +174,6 @@
           prodEl.appendChild(card);
         });
 
-        // تمرير إلى المنتجات بسلاسة
         prodEl.scrollIntoView({ behavior: "smooth", block: "start" });
       } catch (err) {
         prodEl.innerHTML = `<div class="empty">حدث خطأ في جلب المنتجات. حاول مجددًا.</div>`;
@@ -191,8 +186,6 @@
       if (titleEl.textContent.includes("—")) {
         const section = titleEl.textContent.split("—")[1].trim();
         showProducts(section);
-      } else {
-        // إن لم يتم اختيار قسم، لا نفعل شيئًا
       }
     };
   </script>
