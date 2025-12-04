@@ -16,5 +16,14 @@
     "type": "مشاوي",
     "price": "6000",
     "shop": "الموصلي"
+  },
+  {
+    "kind": "product",
+    "section": "⚡ أدوات كهربائي",
+    "name": "استشوار",
+    "photo": "https://mrdr0956.github.io/Btikka-site/images/a.jpg",
+    "description": "ضايع متل خولاني",
+    "type": "حلاقة",
+    "price": "5000"
   }
 ]
