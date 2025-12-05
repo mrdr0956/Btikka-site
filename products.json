@@ -1,39 +1,0 @@
-[
-  {
-    "kind": "shop",
-    "section": "🍰 مطاعم وحلويات",
-    "shop": "خولاني",
-    "photo": "https://mrdr0956.github.io/Btikka-site/images/shop.jpg",
-    "description": "بروستد",
-    "type": "ماكولات جاهزة"
-  },
-  {
-    "kind": "product",
-    "section": "🍰 مطاعم وحلويات",
-    "name": "فروج مشوي",
-    "photo": "https://mrdr0956.github.io/Btikka-site/images/p.jpg",
-    "description": "مع خولاني مقبلات",
-    "type": "مشاوي",
-    "price": "6000",
-    "shop": "خولاني"
-  },
-  {
-    "kind": "product",
-    "section": "⚡ أدوات كهربائي",
-    "name": "استشوار",
-    "photo": "https://mrdr0956.github.io/Btikka-site/images/L.jpg",
-    "description": "صيني خولاني",
-    "type": "حلاقة",
-    "price": "5000"
-  },
-  {
-    "kind": "product",
-    "section": "🍰 مطاعم وحلويات",
-    "name": "فروج بروستد",
-    "photo": "https://mrdr0956.github.io/Btikka-site/images/a.jpg",
-    "description": "فروج بروستد عل استشوار",
-    "type": "سناك",
-    "price": "٤٠٠٠",
-    "shop": "خولاني"
-  }
-]
