@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم بتكة</title>
+    
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #6f42c1;
+            --secondary-color: #0d6efd;
+            --success-color: #198754;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--primary-color) !important;
+        }
+        
+        .stat-card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .action-card {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            height: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .action-card:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .action-card:hover .card-icon {
+            color: white;
+        }
+        
+        .action-card:hover .card-title {
+            color: white;
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .card-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .action-card:hover .card-text {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .modal-content {
+            border-radius: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #5a32a3;
+            border-color: #5a32a3;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .section-title {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin: 30px 0 20px 0;
+            color: var(--dark-color);
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .alert-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .badge-online {
+            background-color: var(--success-color);
+        }
+        
+        .badge-offline {
+            background-color: var(--danger-color);
+        }
+        
+        .product-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .featured-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .action-card {
+                margin-bottom: 15px;
+            }
+            
+            .stat-card {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Telegram WebApp -->
+    <div id="telegram-webapp"></div>
+    
+    <!-- Loading Screen -->
+    <div id="loading" class="loading">
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">جاري التحميل...</span>
+            </div>
+            <h4 class="mt-3">جاري تحميل لوحة التحكم...</h4>
+        </div>
+    </div>
+    
+    <!-- Main Content (Hidden Initially) -->
+    <div id="main-content" style="display: none;">
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-store me-2"></i>لوحة تحكم بتكة
+                </a>
+                <div class="d-flex align-items-center">
+                    <span class="me-3 text-muted" id="admin-name"></span>
+                    <button class="btn btn-outline-primary btn-sm" onclick="refreshData()">
+                        <i class="fas fa-sync-alt"></i> تحديث
+                    </button>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Alerts Container -->
+        <div class="alert-container" id="alert-container"></div>
+        
+        <!-- Main Container -->
+        <div class="container-fluid mt-3">
+            <!-- Statistics Section -->
+            <div class="row" id="stats-section">
+                <div class="col-12">
+                    <h3 class="section-title"><i class="fas fa-chart-bar me-2"></i>الإحصائيات</h3>
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-subtitle mb-2">المنتجات</h6>
+                                    <h2 class="card-title" id="products-count">0</h2>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-box fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-subtitle mb-2">المحلات المميزة</h6>
+                                    <h2 class="card-title" id="featured-count">0</h2>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-star fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card card bg-warning text-dark">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-subtitle mb-2">حالة الإعلانات</h6>
+                                    <h4 class="card-title" id="ads-status">غير معروف</h4>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-ad fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-subtitle mb-2">آخر تحديث</h6>
+                                    <h6 class="card-title" id="last-updated">--:--</h6>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-clock fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions Section -->
+            <div class="row mt-4" id="actions-section">
+                <div class="col-12">
+                    <h3 class="section-title"><i class="fas fa-bolt me-2"></i>الإجراءات السريعة</h3>
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="action-card" onclick="showAddProductModal()">
+                        <div class="card-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <h5 class="card-title">إضافة منتج</h5>
+                        <p class="card-text">أضف منتج جديد إلى المتجر</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="action-card" onclick="showAddFeaturedModal()">
+                        <div class="card-icon">
+                            <i class="fas fa-store-alt"></i>
+                        </div>
+                        <h5 class="card-title">إضافة محل مميز</h5>
+                        <p class="card-text">أضف محل إلى قائمة المميزين</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="action-card" onclick="showDeleteProductModal()">
+                        <div class="card-icon">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                        <h5 class="card-title">حذف منتج</h5>
+                        <p class="card-text">احذف منتج من المتجر</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="action-card" onclick="toggleAdsStatus()">
+                        <div class="card-icon">
+                            <i class="fas fa-adjust"></i>
+                        </div>
+                        <h5 class="card-title">تبديل الإعلانات</h5>
+                        <p class="card-text">فعّل أو عطّل الإعلانات</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Products Management Section -->
+            <div class="row mt-4" id="products-section">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="section-title"><i class="fas fa-boxes me-2"></i>إدارة المنتجات</h3>
+                        <button class="btn btn-primary" onclick="loadProducts()">
+                            <i class="fas fa-sync-alt me-1"></i>تحديث القائمة
+                        </button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="products-table">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th width="50">#</th>
+                                        <th>اسم المنتج</th>
+                                        <th>القسم</th>
+                                        <th>السعر</th>
+                                        <th>النوع</th>
+                                        <th width="100">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="products-table-body">
+                                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Featured Shops Management Section -->
+            <div class="row mt-4" id="featured-section">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="section-title"><i class="fas fa-crown me-2"></i>إدارة المحلات المميزة</h3>
+                        <button class="btn btn-primary" onclick="loadFeaturedShops()">
+                            <i class="fas fa-sync-alt me-1"></i>تحديث القائمة
+                        </button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="featured-table">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th width="50">#</th>
+                                        <th>اسم المحل</th>
+                                        <th>الصورة</th>
+                                        <th>الوصف</th>
+                                        <th>تاريخ الإضافة</th>
+                                        <th width="100">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="featured-table-body">
+                                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="mt-5 py-3 text-center text-muted border-top">
+                <p>© 2024 متجر بتكة - جميع الحقوق محفوظة</p>
+                <p class="small">آخر تحديث: <span id="footer-updated"></span></p>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus-circle me-2"></i>إضافة منتج جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProductForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="productName" class="form-label">اسم المنتج *</label>
+                                <input type="text" class="form-control" id="productName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="productSection" class="form-label">القسم *</label>
+                                <select class="form-select" id="productSection" required>
+                                    <option value="">اختر القسم</option>
+                                    <option value="🍰 مطاعم وحلويات">🍰 مطاعم وحلويات</option>
+                                    <option value="🛍️ سوبر ماركت – مواد غذائية">🛍️ سوبر ماركت – مواد غذائية</option>
+                                    <option value="⚡ أدوات كهربائي">⚡ أدوات كهربائي</option>
+                                    <option value="🔌 إكسسوارات إلكترونية">🔌 إكسسوارات إلكترونية</option>
+                                    <option value="🍽️ ادوات بلاستيكية">🍽️ ادوات بلاستيكية</option>
+                                    <option value="🎁 هدايا">🎁 هدايا</option>
+                                    <option value="🏗️ مواد بناء وتشطيب">🏗️ مواد بناء وتشطيب</option>
+                                    <option value="💊 أدوية ومستلزمات طبية">💊 أدوية ومستلزمات طبية</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="productType" class="form-label">نوع المنتج *</label>
+                                <input type="text" class="form-control" id="productType" placeholder="مثال: حلويات، مشروبات..." required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="productPrice" class="form-label">السعر (ل.س) *</label>
+                                <input type="number" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="productDescription" class="form-label">الوصف</label>
+                                <textarea class="form-control" id="productDescription" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="productPhoto" class="form-label">رابط الصورة *</label>
+                                <input type="url" class="form-control" id="productPhoto" placeholder="https://example.com/image.jpg" required>
+                            </div>
+                            <div class="col-md-12 mb-3" id="shopFieldContainer" style="display: none;">
+                                <label for="productShop" class="form-label">اختر المحل (للقسم مطاعم وحلويات)</label>
+                                <select class="form-select" id="productShop">
+                                    <option value="">-- اختر المحل --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProduct()">حفظ المنتج</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Featured Shop Modal -->
+    <div class="modal fade" id="addFeaturedModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-store-alt me-2"></i>إضافة محل مميز</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addFeaturedForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="featuredName" class="form-label">اسم المحل *</label>
+                                <input type="text" class="form-control" id="featuredName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="featuredPhoto" class="form-label">رابط الصورة *</label>
+                                <input type="url" class="form-control" id="featuredPhoto" placeholder="https://example.com/image.jpg" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="featuredDescription" class="form-label">الوصف *</label>
+                                <textarea class="form-control" id="featuredDescription" rows="3" required></textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="featuredSection" class="form-label">القسم المرتبط (اختياري)</label>
+                                <select class="form-select" id="featuredSection">
+                                    <option value="">لا يوجد قسم</option>
+                                    <option value="🍰 مطاعم وحلويات">🍰 مطاعم وحلويات</option>
+                                    <option value="🛍️ سوبر ماركت – مواد غذائية">🛍️ سوبر ماركت – مواد غذائية</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="featuredShopName" class="form-label">اسم المحل في المتجر (اختياري)</label>
+                                <input type="text" class="form-control" id="featuredShopName" placeholder="إذا كان المحل موجوداً في المتجر">
+                            </div>
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>ملاحظة:</strong> إذا أدخلت اسم المحل والقسم، سيصبح الإعلان قابلاً للنقل إلى صفحة المحل عند النقر عليه.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="saveFeaturedShop()">حفظ المحل المميز</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Product Modal -->
+    <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-trash-alt me-2"></i>حذف منتج</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="searchProduct" class="form-label">ابحث عن المنتج للحذف</label>
+                        <input type="text" class="form-control" id="searchProduct" placeholder="أدخل اسم المنتج...">
+                    </div>
+                    <div id="productSearchResults" style="max-height: 300px; overflow-y: auto;">
+                        <!-- سيتم ملؤها بالجافاسكريبت -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="confirmationBody">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-danger" id="confirmActionBtn">تأكيد</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <!-- Main JavaScript -->
+    <script>
+        // ========== التكوين ==========
+        const CONFIG = {
+            GITHUB_TOKEN: "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",
+            REPO_OWNER: "mrdr0956",
+            REPO_NAME: "Btikka-site",
+            PATHS: {
+                PRODUCTS: "products.json",
+                FEATURED_SHOPS: "featured_shops.json",
+                SETTINGS: "settings.json"
+            },
+            ADMINS: [7139427767],
+            SECTIONS: [
+                "🍰 مطاعم وحلويات",
+                "🛍️ سوبر ماركت – مواد غذائية",
+                "⚡ أدوات كهربائي",
+                "🔌 إكسسوارات إلكترونية",
+                "🍽️ ادوات بلاستيكية",
+                "🎁 هدايا",
+                "🏗️ مواد بناء وتشطيب",
+                "💊 أدوية ومستلزمات طبية"
+            ]
+        };
+        
+        // ========== المتغيرات العامة ==========
+        let tg = null;
+        let currentUser = null;
+        let isAdmin = false;
+        let productsData = [];
+        let featuredShopsData = [];
+        let settingsData = {};
+        
+        // ========== تهيئة Telegram WebApp ==========
+        function initTelegramWebApp() {
+            tg = window.Telegram.WebApp;
+            
+            // توسيع نافذة WebApp
+            tg.expand();
+            
+            // تعيين لون الخلفية
+            tg.setBackgroundColor('#f5f5f5');
+            
+            // الحصول على بيانات المستخدم
+            currentUser = tg.initDataUnsafe.user;
+            
+            // التحقق من صلاحية الأدمن
+            if (currentUser && CONFIG.ADMINS.includes(currentUser.id)) {
+                isAdmin = true;
+                document.getElementById('admin-name').textContent = currentUser.first_name || 'أدمن';
+                showMainContent();
+            } else {
+                showError('ليس لديك صلاحية الدخول إلى لوحة التحكم.');
+            }
+        }
+        
+        // ========== وظائف العرض ==========
+        function showMainContent() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            loadAllData();
+        }
+        
+        function showError(message) {
+            document.getElementById('loading').innerHTML = `
+                <div class="alert alert-danger text-center" style="max-width: 500px;">
+                    <h4><i class="fas fa-exclamation-triangle"></i> خطأ في الوصول</h4>
+                    <p>${message}</p>
+                    <button class="btn btn-primary mt-3" onclick="location.reload()">إعادة المحاولة</button>
+                </div>
+            `;
+        }
+        
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alert-container');
+            const alertId = 'alert-' + Date.now();
+            
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" id="${alertId}" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" onclick="document.getElementById('${alertId}').remove()"></button>
+                </div>
+            `;
+            
+            alertContainer.insertAdjacentHTML('afterbegin', alertHtml);
+            
+            // إزالة التنبيه بعد 5 ثوان
+            setTimeout(() => {
+                const alert = document.getElementById(alertId);
+                if (alert) alert.remove();
+            }, 5000);
+        }
+        
+        // ========== وظائف GitHub API ==========
+        async function fetchGitHubFile(filePath) {
+            const url = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/contents/${filePath}`;
+            
+            try {
+                const response = await axios.get(url, {
+                    headers: {
+                        'Authorization': `Bearer ${CONFIG.GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github+json'
+                    }
+                });
+                
+                const content = atob(response.data.content);
+                return {
+                    data: JSON.parse(content),
+                    sha: response.data.sha
+                };
+            } catch (error) {
+                console.error('Error fetching file:', error);
+                throw error;
+            }
+        }
+        
+        async function saveGitHubFile(filePath, content, sha) {
+            const url = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/contents/${filePath}`;
+            
+            const contentBase64 = btoa(JSON.stringify(content, null, 2));
+            
+            const payload = {
+                message: `Update ${filePath} via admin panel`,
+                content: contentBase64,
+                sha: sha
+            };
+            
+            try {
+                const response = await axios.put(url, payload, {
+                    headers: {
+                        'Authorization': `Bearer ${CONFIG.GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github+json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                return response.data;
+            } catch (error) {
+                console.error('Error saving file:', error);
+                throw error;
+            }
+        }
+        
+        // ========== تحميل البيانات ==========
+        async function loadAllData() {
+            try {
+                const [productsRes, featuredRes, settingsRes] = await Promise.all([
+                    fetchGitHubFile(CONFIG.PATHS.PRODUCTS),
+                    fetchGitHubFile(CONFIG.PATHS.FEATURED_SHOPS),
+                    fetchGitHubFile(CONFIG.PATHS.SETTINGS)
+                ]);
+                
+                productsData = productsRes.data;
+                featuredShopsData = featuredRes.data;
+                settingsData = settingsRes.data;
+                
+                updateStatistics();
+                loadProducts();
+                loadFeaturedShops();
+                
+                const now = new Date().toLocaleTimeString('ar-SA');
+                document.getElementById('last-updated').textContent = now;
+                document.getElementById('footer-updated').textContent = now;
+                
+                showAlert('تم تحميل البيانات بنجاح', 'success');
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showAlert('خطأ في تحميل البيانات', 'danger');
+            }
+        }
+        
+        function updateStatistics() {
+            // عدد المنتجات
+            const productCount = productsData.filter(p => p.kind === 'product').length;
+            document.getElementById('products-count').textContent = productCount;
+            
+            // عدد المحلات المميزة
+            const featuredCount = featuredShopsData.length;
+            document.getElementById('featured-count').textContent = featuredCount;
+            
+            // حالة الإعلانات
+            const adsStatus = settingsData.header_mode === 'ads' ? 'مفعلة 🟢' : 'معطلة 🔴';
+            document.getElementById('ads-status').textContent = adsStatus;
+        }
+        
+        // ========== إدارة المنتجات ==========
+        function loadProducts() {
+            const tableBody = document.getElementById('products-table-body');
+            const products = productsData.filter(p => p.kind === 'product');
+            
+            tableBody.innerHTML = '';
+            
+            products.forEach((product, index) => {
+                const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${product.name || ''}</td>
+                        <td>${product.section || ''}</td>
+                        <td>${product.price ? product.price + ' ل.س' : ''}</td>
+                        <td>${product.type || ''}</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProductConfirm(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+        
+        function showAddProductModal() {
+            const modal = new bootstrap.Modal(document.getElementById('addProductModal'));
+            
+            // إعادة تعيين النموذج
+            document.getElementById('addProductForm').reset();
+            
+            // إظهار/إخفاء حقل المحل حسب القسم
+            document.getElementById('productSection').addEventListener('change', function() {
+                const shopFieldContainer = document.getElementById('shopFieldContainer');
+                const productShopSelect = document.getElementById('productShop');
+                
+                if (this.value === '🍰 مطاعم وحلويات') {
+                    shopFieldContainer.style.display = 'block';
+                    
+                    // تحميل المحلات لهذا القسم
+                    const shops = productsData.filter(p => 
+                        p.kind === 'shop' && 
+                        p.section === '🍰 مطاعم وحلويات'
+                    );
+                    
+                    productShopSelect.innerHTML = '<option value="">-- اختر المحل --</option>';
+                    shops.forEach(shop => {
+                        productShopSelect.innerHTML += `<option value="${shop.shop}">${shop.shop}</option>`;
+                    });
+                } else {
+                    shopFieldContainer.style.display = 'none';
+                }
+            });
+            
+            modal.show();
+        }
+        
+        async function saveProduct() {
+            const product = {
+                kind: 'product',
+                section: document.getElementById('productSection').value,
+                name: document.getElementById('productName').value,
+                photo: document.getElementById('productPhoto').value,
+                description: document.getElementById('productDescription').value,
+                type: document.getElementById('productType').value,
+                price: document.getElementById('productPrice').value
+            };
+            
+            // التحقق من البيانات المطلوبة
+            if (!product.name || !product.section || !product.type || !product.price || !product.photo) {
+                showAlert('الرجاء ملء جميع الحقول المطلوبة', 'warning');
+                return;
+            }
+            
+            // إضافة المحل إذا كان القسم مطاعم وحلويات
+            if (product.section === '🍰 مطاعم وحلويات') {
+                const shop = document.getElementById('productShop').value;
+                if (shop) {
+                    product.shop = shop;
+                }
+            }
+            
+            try {
+                const response = await fetchGitHubFile(CONFIG.PATHS.PRODUCTS);
+                const products = response.data;
+                const sha = response.sha;
+                
+                products.push(product);
+                await saveGitHubFile(CONFIG.PATHS.PRODUCTS, products, sha);
+                
+                // تحديث البيانات المحلية
+                productsData = products;
+                
+                // إغلاق المودال وتحديث العرض
+                bootstrap.Modal.getInstance(document.getElementById('addProductModal')).hide();
+                updateStatistics();
+                loadProducts();
+                
+                showAlert('تم إضافة المنتج بنجاح', 'success');
+            } catch (error) {
+                console.error('Error saving product:', error);
+                showAlert('خطأ في حفظ المنتج', 'danger');
+            }
+        }
+        
+        function deleteProductConfirm(index) {
+            const product = productsData.filter(p => p.kind === 'product')[index];
+            
+            if (!product) return;
+            
+            document.getElementById('confirmationTitle').textContent = 'تأكيد الحذف';
+            document.getElementById('confirmationBody').innerHTML = `
+                <p>هل أنت متأكد من حذف المنتج التالي؟</p>
+                <div class="alert alert-warning">
+                    <strong>اسم المنتج:</strong> ${product.name}<br>
+                    <strong>القسم:</strong> ${product.section}<br>
+                    <strong>السعر:</strong> ${product.price} ل.س
+                </div>
+                <p class="text-danger"><i class="fas fa-exclamation-triangle"></i> لا يمكن التراجع عن هذا الإجراء.</p>
+            `;
+            
+            document.getElementById('confirmActionBtn').onclick = () => deleteProduct(index);
+            
+            const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+            modal.show();
+        }
+        
+        async function deleteProduct(index) {
+            try {
+                const response = await fetchGitHubFile(CONFIG.PATHS.PRODUCTS);
+                const products = response.data;
+                const sha = response.sha;
+                
+                // العثور على المنتج الفعلي في المصفوفة
+                const productList = products.filter(p => p.kind === 'product');
+                const productToDelete = productList[index];
+                const deleteIndex = products.indexOf(productToDelete);
+                
+                if (deleteIndex !== -1) {
+                    products.splice(deleteIndex, 1);
+                    await saveGitHubFile(CONFIG.PATHS.PRODUCTS, products, sha);
+                    
+                    // تحديث البيانات المحلية
+                    productsData = products;
+                    
+                    // إغلاق المودال وتحديث العرض
+                    bootstrap.Modal.getInstance(document.getElementById('confirmationModal')).hide();
+                    updateStatistics();
+                    loadProducts();
+                    
+                    showAlert('تم حذف المنتج بنجاح', 'success');
+                }
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                showAlert('خطأ في حذف المنتج', 'danger');
+            }
+        }
+        
+        function showDeleteProductModal() {
+            const modal = new bootstrap.Modal(document.getElementById('deleteProductModal'));
+            
+            // البحث عن المنتجات
+            document.getElementById('searchProduct').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const resultsContainer = document.getElementById('productSearchResults');
+                const products = productsData.filter(p => p.kind === 'product');
+                
+                const filteredProducts = products.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.section.toLowerCase().includes(searchTerm) ||
+                    product.type.toLowerCase().includes(searchTerm)
+                );
+                
+                resultsContainer.innerHTML = '';
+                
+                if (filteredProducts.length === 0) {
+                    resultsContainer.innerHTML = '<div class="alert alert-info">لا توجد نتائج</div>';
+                    return;
+                }
+                
+                filteredProducts.forEach((product, index) => {
+                    const productIndex = products.indexOf(product);
+                    const productCard = `
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-1">${product.name}</h6>
+                                        <p class="card-text mb-1 small">
+                                            <span class="badge bg-secondary">${product.section}</span>
+                                            <span class="badge bg-info">${product.type}</span>
+                                            <span class="badge bg-success">${product.price} ل.س</span>
+                                        </p>
+                                    </div>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteProductConfirm(${productIndex})">
+                                        <i class="fas fa-trash"></i> حذف
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    resultsContainer.innerHTML += productCard;
+                });
+            });
+            
+            modal.show();
+        }
+        
+        // ========== إدارة المحلات المميزة ==========
+        function loadFeaturedShops() {
+            const tableBody = document.getElementById('featured-table-body');
+            
+            tableBody.innerHTML = '';
+            
+            featuredShopsData.forEach((shop, index) => {
+                const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${shop.name || ''}</td>
+                        <td>
+                            ${shop.photo ? `
+                                <img src="${shop.photo}" alt="${shop.name}" class="featured-img" 
+                                     onerror="this.src='https://via.placeholder.com/80/6f42c1/ffffff?text=⭐'">
+                            ` : 'بدون صورة'}
+                        </td>
+                        <td>${shop.description ? shop.description.substring(0, 50) + '...' : ''}</td>
+                        <td>${shop.added_date ? new Date(shop.added_date).toLocaleDateString('ar-SA') : ''}</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="deleteFeaturedShopConfirm(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+        
+        function showAddFeaturedModal() {
+            const modal = new bootstrap.Modal(document.getElementById('addFeaturedModal'));
+            
+            // إعادة تعيين النموذج
+            document.getElementById('addFeaturedForm').reset();
+            
+            modal.show();
+        }
+        
+        async function saveFeaturedShop() {
+            const featuredShop = {
+                id: Date.now().toString(),
+                name: document.getElementById('featuredName').value,
+                photo: document.getElementById('featuredPhoto').value,
+                description: document.getElementById('featuredDescription').value,
+                added_date: new Date().toISOString(),
+                active: true
+            };
+            
+            // إضافة حقول الربط بالمحل إذا تم إدخالها
+            const section = document.getElementById('featuredSection').value;
+            const shopName = document.getElementById('featuredShopName').value;
+            
+            if (section) {
+                featuredShop.section = section;
+            }
+            
+            if (shopName) {
+                featuredShop.shop_name = shopName;
+            }
+            
+            // التحقق من البيانات المطلوبة
+            if (!featuredShop.name || !featuredShop.photo || !featuredShop.description) {
+                showAlert('الرجاء ملء جميع الحقول المطلوبة', 'warning');
+                return;
+            }
+            
+            try {
+                const response = await fetchGitHubFile(CONFIG.PATHS.FEATURED_SHOPS);
+                const featuredShops = response.data;
+                const sha = response.sha;
+                
+                featuredShops.push(featuredShop);
+                await saveGitHubFile(CONFIG.PATHS.FEATURED_SHOPS, featuredShops, sha);
+                
+                // تحديث البيانات المحلية
+                featuredShopsData = featuredShops;
+                
+                // إغلاق المودال وتحديث العرض
+                bootstrap.Modal.getInstance(document.getElementById('addFeaturedModal')).hide();
+                updateStatistics();
+                loadFeaturedShops();
+                
+                showAlert('تم إضافة المحل المميز بنجاح', 'success');
+            } catch (error) {
+                console.error('Error saving featured shop:', error);
+                showAlert('خطأ في حفظ المحل المميز', 'danger');
+            }
+        }
+        
+        function deleteFeaturedShopConfirm(index) {
+            const shop = featuredShopsData[index];
+            
+            if (!shop) return;
+            
+            document.getElementById('confirmationTitle').textContent = 'تأكيد حذف محل مميز';
+            document.getElementById('confirmationBody').innerHTML = `
+                <p>هل أنت متأكد من حذف المحل المميز التالي؟</p>
+                <div class="alert alert-warning">
+                    <strong>اسم المحل:</strong> ${shop.name}<br>
+                    <strong>الوصف:</strong> ${shop.description ? shop.description.substring(0, 100) + '...' : 'بدون وصف'}
+                </div>
+                <p class="text-danger"><i class="fas fa-exclamation-triangle"></i> لا يمكن التراجع عن هذا الإجراء.</p>
+            `;
+            
+            document.getElementById('confirmActionBtn').onclick = () => deleteFeaturedShop(index);
+            
+            const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+            modal.show();
+        }
+        
+        async function deleteFeaturedShop(index) {
+            try {
+                const response = await fetchGitHubFile(CONFIG.PATHS.FEATURED_SHOPS);
+                const featuredShops = response.data;
+                const sha = response.sha;
+                
+                featuredShops.splice(index, 1);
+                await saveGitHubFile(CONFIG.PATHS.FEATURED_SHOPS, featuredShops, sha);
+                
+                // تحديث البيانات المحلية
+                featuredShopsData = featuredShops;
+                
+                // إغلاق المودال وتحديث العرض
+                bootstrap.Modal.getInstance(document.getElementById('confirmationModal')).hide();
+                updateStatistics();
+                loadFeaturedShops();
+                
+                showAlert('تم حذف المحل المميز بنجاح', 'success');
+            } catch (error) {
+                console.error('Error deleting featured shop:', error);
+                showAlert('خطأ في حذف المحل المميز', 'danger');
+            }
+        }
+        
+        // ========== إدارة الإعلانات ==========
+        async function toggleAdsStatus() {
+            try {
+                const response = await fetchGitHubFile(CONFIG.PATHS.SETTINGS);
+                const settings = response.data;
+                const sha = response.sha;
+                
+                // تبديل الحالة
+                const currentMode = settings.header_mode || 'welcome';
+                const newMode = currentMode === 'ads' ? 'welcome' : 'ads';
+                
+                settings.header_mode = newMode;
+                settings.last_updated = new Date().toISOString();
+                
+                await saveGitHubFile(CONFIG.PATHS.SETTINGS, settings, sha);
+                
+                // تحديث البيانات المحلية
+                settingsData = settings;
+                updateStatistics();
+                
+                const statusText = newMode === 'ads' ? 'مفعلة' : 'معطلة';
+                showAlert(`تم ${newMode === 'ads' ? 'تفعيل' : 'تعطيل'} الإعلانات بنجاح (${statusText})`, 'success');
+            } catch (error) {
+                console.error('Error toggling ads:', error);
+                showAlert('خطأ في تبديل حالة الإعلانات', 'danger');
+            }
+        }
+        
+        // ========== وظائف مساعدة ==========
+        function refreshData() {
+            showAlert('جاري تحديث البيانات...', 'info');
+            loadAllData();
+        }
+        
+        // ========== تهيئة الصفحة ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            initTelegramWebApp();
+        });
+    </script>
+</body>
+</html>
