@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة متجر بتكة - لوحة تحكم GitHub</title>
+    <style>
+        :root {
+            --primary: #6f42c1;
+            --secondary: #0d6efd;
+            --success: #198754;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --github: #24292e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* شريط العنوان */
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            border-bottom: 5px solid var(--primary);
+        }
+        
+        .header h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        /* التبويبات */
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 18px 20px;
+            border: none;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            min-width: 180px;
+        }
+        
+        .tab-btn:hover {
+            background: #e9ecef;
+            color: var(--primary);
+        }
+        
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        /* محتوى التبويبات */
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* التصميم العام للنماذج */
+        .form-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .form-card h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #dee2e6;
+            font-size: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 15px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a32a3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(111, 66, 193, 0.3);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #157347;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #bb2d3b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+        
+        .btn-github {
+            background: var(--github);
+            color: white;
+        }
+        
+        .btn-github:hover {
+            background: #0d1117;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(36, 41, 46, 0.3);
+        }
+        
+        /* تنبيهات */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .alert-success {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            border-color: #badbcc;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #842029;
+            border-color: #f5c2c7;
+        }
+        
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #664d03;
+            border-color: #ffecb5;
+        }
+        
+        /* قوائم البيانات */
+        .data-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+        }
+        
+        .data-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .data-item:last-child {
+            border-bottom: none;
+        }
+        
+        .data-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .data-info h4 {
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .data-info p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+        
+        .data-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        /* قسم الإحصائيات */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* شريط البحث */
+        .search-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        /* رسالة فارغة */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #dee2e6;
+        }
+        
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #666;
+        }
+        
+        /* الفوتر */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+        
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                padding: 15px;
+                text-align: center;
+                min-width: auto;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+            
+            .form-card {
+                padding: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .data-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+        
+        /* تأثيرات التحميل */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* تلميحات */
+        .hint {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        
+        /* أقسام داخلية */
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        /* شريط حالة GitHub */
+        .github-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--github);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        /* شريط الحالة */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .status-badge.ads {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+        
+        .status-badge.else {
+            background: #cfe2ff;
+            color: #084298;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- شريط العنوان -->
+        <div class="header">
+            <h1>🛍️ إدارة متجر بتكة</h1>
+            <p>لوحة تحكم متصلة بـ GitHub - تخزين البيانات مباشرة في المستودع</p>
+        </div>
+        
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-item">
+                <span>🌐 حالة الاتصال:</span>
+                <span id="connectionStatus">جاري الاتصال...</span>
+            </div>
+            <div class="status-item">
+                <span>📁 وضع الهيدر:</span>
+                <span id="headerModeStatus" class="status-badge">جاري التحميل...</span>
+            </div>
+            <div class="status-item">
+                <button class="btn btn-github btn-sm" onclick="testGitHubConnection()">🔗 اختبار اتصال GitHub</button>
+            </div>
+        </div>
+        
+        <!-- التبويبات -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="dashboard">📊 لوحة التحكم</button>
+            <button class="tab-btn" data-tab="products">📦 إدارة المنتجات</button>
+            <button class="tab-btn" data-tab="shops">🏪 إدارة المحلات</button>
+            <button class="tab-btn" data-tab="ads">⭐ إدارة الإعلانات</button>
+            <button class="tab-btn" data-tab="settings">⚙️ الإعدادات</button>
+        </div>
+        
+        <!-- تبويب لوحة التحكم -->
+        <div id="dashboard" class="tab-content active">
+            <!-- الإحصائيات -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-value" id="totalProducts">0</div>
+                    <div class="stat-label">منتج</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏪</div>
+                    <div class="stat-value" id="totalShops">0</div>
+                    <div class="stat-label">محل</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-value" id="totalAds">0</div>
+                    <div class="stat-label">إعلان</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔄</div>
+                    <div class="stat-value" id="lastUpdate">-</div>
+                    <div class="stat-label">آخر تحديث</div>
+                </div>
+            </div>
+            
+            <!-- تعليمات الاستخدام -->
+            <div class="form-card">
+                <h3>📋 تعليمات الاستخدام (GitHub Edition)</h3>
+                <div class="section">
+                    <h4 class="section-title">✨ المميزات:</h4>
+                    <ul style="margin-right: 20px; line-height: 2;">
+                        <li>تخزين البيانات مباشرة في مستودع GitHub</li>
+                        <li>التزامن الفوري مع جميع الأجهزة</li>
+                        <li>إدارة ملف settings.json لتغيير إعدادات الموقع</li>
+                        <li>نسخ احتياطي تلقائي مع كل تعديل</li>
+                        <li>إنشاء الملفات تلقائياً إذا لم تكن موجودة</li>
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <h4 class="section-title">🚀 كيف يعمل:</h4>
+                    <ol style="margin-right: 20px; line-height: 2;">
+                        <li>يتم تخزين البيانات في ملفات JSON في مستودع GitHub</li>
+                        <li>كل عملية إضافة/تعديل/حذف تحدث الملفات مباشرة</li>
+                        <li>يتم استخدام GitHub API للتواصل مع المستودع</li>
+                        <li>يمكنك رؤية جميع التغييرات في سجل الـ commits</li>
+                    </ol>
+                </div>
+                
+                <div class="section">
+                    <h4 class="section-title">📂 ملفات البيانات في GitHub:</h4>
+                    <ul style="margin-right: 20px; line-height: 2;">
+                        <li><code>products.json</code> - جميع المنتجات</li>
+                        <li><code>shops.json</code> - المحلات</li>
+                        <li><code>ads.json</code> - الإعلانات</li>
+                        <li><code>settings.json</code> - إعدادات الموقع (وضع الهيدر)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- تبويب إدارة المنتجات -->
+        <div id="products" class="tab-content">
+            <div class="alert alert-warning">
+                <div>
+                    <strong>ملاحظة:</strong> الأقسام التي تحتاج اختيار محل: مطاعم وحلويات، بناء وتشطيب، طبية وتجميل
+                </div>
+            </div>
+            
+            <!-- إضافة منتج -->
+            <div class="form-card">
+                <h3>➕ إضافة منتج جديد</h3>
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label for="productSection">القسم *</label>
+                        <select class="form-control" id="productSection" required>
+                            <option value="">اختر القسم</option>
+                            <option value="🍰 مطاعم وحلويات">🍰 مطاعم وحلويات</option>
+                            <option value="🏗️ مستلزمات إعمار وتشطيب">🏗️ مستلزمات إعمار وتشطيب</option>
+                            <option value="💊 طبية ومستحضرات تجميل">💊 طبية ومستحضرات تجميل</option>
+                            <option value="🛍️ سوبر ماركت – مواد غذائية">🛍️ سوبر ماركت – مواد غذائية</option>
+                            <option value="⚡ أدوات كهربائي">⚡ أدوات كهربائي</option>
+                            <option value="🔌 إكسسوارات إلكترونية">🔌 إكسسوارات إلكترونية</option>
+                            <option value="🍽️ ادوات بلاستيكية">🍽️ ادوات بلاستيكية</option>
+                            <option value="🎁 هدايا">🎁 هدايا</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="shopField" style="display: none;">
+                        <label for="productShop">اختر المحل *</label>
+                        <select class="form-control" id="productShop">
+                            <option value="">اختر المحل</option>
+                        </select>
+                        <div class="hint">هذا القسم يتطلب اختيار محل</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productName">اسم المنتج *</label>
+                        <input type="text" class="form-control" id="productName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productPrice">السعر (ل.س) *</label>
+                        <input type="number" class="form-control" id="productPrice" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productType">نوع المنتج *</label>
+                        <input type="text" class="form-control" id="productType" placeholder="مثال: حلويات، مشروبات، أدوية..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productDescription">وصف المنتج</label>
+                        <textarea class="form-control" id="productDescription" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productPhoto">رابط الصورة *</label>
+                        <input type="url" class="form-control" id="productPhoto" placeholder="https://example.com/image.jpg" required>
+                    </div>
+                    
+                    <div id="productMessage" class="alert" style="display: none;"></div>
+                    
+                    <button type="button" class="btn btn-primary" onclick="addProduct()">
+                        <span id="productBtnText">💾 حفظ المنتج إلى GitHub</span>
+                        <div class="loading" id="productLoading" style="display: none;"></div>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- قائمة المنتجات -->
+            <div class="form-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>📋 المنتجات الحالية</h3>
+                    <button class="btn btn-success btn-sm" onclick="loadProducts()">
+                        🔄 تحديث القائمة
+                    </button>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" class="search-input" id="searchProduct" placeholder="🔍 ابحث عن منتج بالاسم أو النوع..." onkeyup="searchProducts()">
+                </div>
+                
+                <div id="productsList" class="data-list">
+                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- تبويب إدارة المحلات -->
+        <div id="shops" class="tab-content">
+            <!-- إضافة محل -->
+            <div class="form-card">
+                <h3>🏪 إضافة محل جديد</h3>
+                <form id="addShopForm">
+                    <div class="form-group">
+                        <label for="shopSection">القسم *</label>
+                        <select class="form-control" id="shopSection" required>
+                            <option value="">اختر القسم</option>
+                            <option value="🍰 مطاعم وحلويات">🍰 مطاعم وحلويات</option>
+                            <option value="🏗️ مستلزمات إعمار وتشطيب">🏗️ مستلزمات إعمار وتشطيب</option>
+                            <option value="💊 طبية ومستحضرات تجميل">💊 طبية ومستحضرات تجميل</option>
+                        </select>
+                        <div class="hint">المحلات متاحة فقط لهذه الأقسام الثلاثة</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shopName">اسم المحل *</label>
+                        <input type="text" class="form-control" id="shopName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shopType">نوع المحل *</label>
+                        <input type="text" class="form-control" id="shopType" placeholder="مثال: مطعم عربي، صيدلية، محل دهانات..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shopDescription">وصف المحل *</label>
+                        <textarea class="form-control" id="shopDescription" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shopPhoto">رابط صورة المحل *</label>
+                        <input type="url" class="form-control" id="shopPhoto" placeholder="https://example.com/shop.jpg" required>
+                    </div>
+                    
+                    <div id="shopMessage" class="alert" style="display: none;"></div>
+                    
+                    <button type="button" class="btn btn-primary" onclick="addShop()">
+                        <span id="shopBtnText">💾 حفظ المحل إلى GitHub</span>
+                        <div class="loading" id="shopLoading" style="display: none;"></div>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- قائمة المحلات -->
+            <div class="form-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>📋 المحلات الحالية</h3>
+                    <button class="btn btn-success btn-sm" onclick="loadShops()">
+                        🔄 تحديث القائمة
+                    </button>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" class="search-input" id="searchShop" placeholder="🔍 ابحث عن محل بالاسم أو النوع..." onkeyup="searchShops()">
+                </div>
+                
+                <div id="shopsList" class="data-list">
+                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- تبويب إدارة الإعلانات -->
+        <div id="ads" class="tab-content">
+            <!-- إضافة إعلان -->
+            <div class="form-card">
+                <h3>⭐ إضافة إعلان جديد</h3>
+                <form id="addAdForm">
+                    <div class="form-group">
+                        <label for="adName">اسم الإعلان *</label>
+                        <input type="text" class="form-control" id="adName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adDescription">وصف الإعلان *</label>
+                        <textarea class="form-control" id="adDescription" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adPhoto">رابط صورة الإعلان *</label>
+                        <input type="url" class="form-control" id="adPhoto" placeholder="https://example.com/ad.jpg" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adLinkType">نوع الربط (اختياري)</label>
+                        <select class="form-control" id="adLinkType">
+                            <option value="">إعلان عادي</option>
+                            <option value="shop">ربط بمحل</option>
+                            <option value="product">ربط بمنتج</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="adLinkField" style="display: none;">
+                        <label id="adLinkLabel">اختر المحل/المنتج</label>
+                        <select class="form-control" id="adLinkId">
+                            <option value="">-- اختر --</option>
+                        </select>
+                    </div>
+                    
+                    <div id="adMessage" class="alert" style="display: none;"></div>
+                    
+                    <button type="button" class="btn btn-primary" onclick="addAd()">
+                        <span id="adBtnText">💾 حفظ الإعلان إلى GitHub</span>
+                        <div class="loading" id="adLoading" style="display: none;"></div>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- قائمة الإعلانات -->
+            <div class="form-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>📋 الإعلانات الحالية</h3>
+                    <button class="btn btn-success btn-sm" onclick="loadAds()">
+                        🔄 تحديث القائمة
+                    </button>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" class="search-input" id="searchAd" placeholder="🔍 ابحث عن إعلان..." onkeyup="searchAds()">
+                </div>
+                
+                <div id="adsList" class="data-list">
+                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- تبويب الإعدادات -->
+        <div id="settings" class="tab-content">
+            <!-- إعدادات الهيدر -->
+            <div class="form-card">
+                <h3>⚙️ إعدادات الهيدر (Header)</h3>
+                <div class="section">
+                    <h4 class="section-title">🔄 تبديل وضع الهيدر</h4>
+                    <p>يمكنك تغيير وضع الهيدر بين:</p>
+                    <ul style="margin-right: 20px; line-height: 2; margin-bottom: 20px;">
+                        <li><strong>"ads"</strong>: عرض الإعلانات في الهيدر (للمتجر الحالي)</li>
+                        <li><strong>"else"</strong>: عرض خيارات أخرى في الهيدر (محتوى بديل)</li>
+                    </ul>
+                    
+                    <div class="alert alert-warning">
+                        <strong>ملاحظة:</strong> سيتم حفظ هذا التغيير في ملف <code>settings.json</code> في مستودع GitHub
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>الوضع الحالي:</label>
+                        <div id="currentHeaderMode" style="padding: 15px; background: #f8f9fa; border-radius: 8px; margin: 10px 0; font-size: 18px; text-align: center;">
+                            جاري التحميل...
+                        </div>
+                    </div>
+                    
+                    <div id="headerModeMessage" class="alert" style="display: none;"></div>
+                    
+                    <button type="button" class="btn btn-primary" onclick="toggleHeaderMode()" id="toggleHeaderBtn">
+                        <span id="toggleBtnText">🔄 تبديل وضع الهيدر</span>
+                        <div class="loading" id="headerModeLoading" style="display: none;"></div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- إدارة ملفات GitHub -->
+            <div class="form-card">
+                <h3>📁 إدارة ملفات GitHub</h3>
+                <div class="section">
+                    <h4 class="section-title">🔧 إنشاء الملفات المفقودة</h4>
+                    <p>يمكنك إنشاء ملفات JSON إذا كانت غير موجودة في المستودع:</p>
+                    
+                    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 20px;">
+                        <div class="stat-card">
+                            <div class="stat-icon">📦</div>
+                            <div class="stat-label">products.json</div>
+                            <div id="productsFileStatus" style="font-size: 14px; color: #666; margin-top: 10px;">...</div>
+                            <button class="btn btn-sm" onclick="createFileIfMissing('products.json', '[]')" style="margin-top: 10px;">➕ إنشاء</button>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🏪</div>
+                            <div class="stat-label">shops.json</div>
+                            <div id="shopsFileStatus" style="font-size: 14px; color: #666; margin-top: 10px;">...</div>
+                            <button class="btn btn-sm" onclick="createFileIfMissing('shops.json', '[]')" style="margin-top: 10px;">➕ إنشاء</button>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-label">ads.json</div>
+                            <div id="adsFileStatus" style="font-size: 14px; color: #666; margin-top: 10px;">...</div>
+                            <button class="btn btn-sm" onclick="createFileIfMissing('ads.json', '[]')" style="margin-top: 10px;">➕ إنشاء</button>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⚙️</div>
+                            <div class="stat-label">settings.json</div>
+                            <div id="settingsFileStatus" style="font-size: 14px; color: #666; margin-top: 10px;">...</div>
+                            <button class="btn btn-sm" onclick="createFileIfMissing('settings.json', '{"header_mode": "ads"}')" style="margin-top: 10px;">➕ إنشاء</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h4 class="section-title">🔄 تحديث جميع البيانات</h4>
+                    <p>تحميل أحدث البيانات من GitHub:</p>
+                    <button class="btn btn-success" onclick="reloadAllData()">
+                        🔄 تحديث جميع البيانات من GitHub
+                    </button>
+                </div>
+            </div>
+            
+            <!-- معلومات GitHub -->
+            <div class="form-card">
+                <h3>🔗 معلومات اتصال GitHub</h3>
+                <div class="section">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #dee2e6;"><strong>المستودع:</strong></td>
+                            <td style="padding: 10px; border-bottom: 1px solid #dee2e6;"><code>mrdr0956/Btikka-site</code></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #dee2e6;"><strong>الفرع:</strong></td>
+                            <td style="padding: 10px; border-bottom: 1px solid #dee2e6;"><code>main</code></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #dee2e6;"><strong>حالة الاتصال:</strong></td>
+                            <td style="padding: 10px; border-bottom: 1px solid #dee2e6;"><span id="apiStatus">غير متصل</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الفوتر -->
+        <div class="footer">
+            <p>© 2024 متجر بتكة - لوحة التحكم المتصلة بـ GitHub | تخزين البيانات مباشرة في المستودع</p>
+            <p>جميع البيانات تحفظ تلقائياً في ملفات JSON في مستودع GitHub</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // ========== إعدادات GitHub ==========
+        const GITHUB_TOKEN = 'github_pat_11B3BVMIY0XKgbsK5C4WjZ_F9ghcildG56g68T56TkcjbWLAnfmOc9jeSc6zdHfSTVSL7XHOAz7NnmV';
+        const REPO_OWNER = 'mrdr0956';
+        const REPO_NAME = 'Btikka-site';
+        const BRANCH = 'main';
+        
+        // مسارات الملفات في المستودع
+        const PRODUCTS_FILE = 'products.json';
+        const SHOPS_FILE = 'shops.json';
+        const ADS_FILE = 'ads.json';
+        const SETTINGS_FILE = 'settings.json';
+        
+        // ========== البيانات ==========
+        let products = [];
+        let shops = [];
+        let ads = [];
+        let settings = { header_mode: 'ads' };
+        
+        // الأقسام التي تحتاج محلات
+        const SHOP_REQUIRED_SECTIONS = [
+            '🍰 مطاعم وحلويات',
+            '🏗️ مستلزمات إعمار وتشطيب',
+            '💊 طبية ومستحضرات تجميل'
+        ];
+        
+        // ========== دوال GitHub API ==========
+        // دالة لقراءة ملف من GitHub
+        async function readFromGitHub(filename) {
+            try {
+                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filename}?ref=${BRANCH}`;
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                // إذا الملف غير موجود، نرجع القيمة الافتراضية
+                if (response.status === 404) {
+                    console.log(`ملف ${filename} غير موجود في GitHub`);
+                    return null;
+                }
+                
+                if (!response.ok) {
+                    throw new Error(`خطأ في قراءة الملف: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // فك التشفير base64
+                try {
+                    const content = atob(data.content);
+                    return JSON.parse(content);
+                } catch (parseError) {
+                    console.error(`خطأ في تحليل JSON لملف ${filename}:`, parseError);
+                    return null;
+                }
+            } catch (error) {
+                console.error(`❌ خطأ في قراءة ${filename} من GitHub:`, error);
+                throw error;
+            }
+        }
+        
+        // دالة لحفظ ملف في GitHub
+        async function saveToGitHub(filename, data) {
+            try {
+                // الحصول على معلومات الملف الحالي (لأخذ SHA إذا كان موجوداً)
+                const getUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filename}?ref=${BRANCH}`;
+                const getResponse = await fetch(getUrl, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                let sha = null;
+                if (getResponse.ok) {
+                    const fileInfo = await getResponse.json();
+                    sha = fileInfo.sha;
+                }
+                
+                // تحويل البيانات إلى JSON ثم إلى base64
+                const jsonString = JSON.stringify(data, null, 2);
+                const content = btoa(unescape(encodeURIComponent(jsonString)));
+                
+                // إعداد رسالة commit
+                const commitMessage = sha ? 
+                    `Update ${filename} - ${new Date().toLocaleString('ar-SA')}` :
+                    `Create ${filename} - ${new Date().toLocaleString('ar-SA')}`;
+                
+                // إرسال طلب التحديث/الإضافة
+                const updateUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filename}`;
+                const updateResponse = await fetch(updateUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: commitMessage,
+                        content: content,
+                        sha: sha,
+                        branch: BRANCH
+                    })
+                });
+                
+                if (!updateResponse.ok) {
+                    const errorData = await updateResponse.json();
+                    throw new Error(`خطأ في حفظ الملف: ${errorData.message || JSON.stringify(errorData)}`);
+                }
+                
+                console.log(`✅ تم حفظ ${filename} في GitHub بنجاح`);
+                return true;
+            } catch (error) {
+                console.error(`❌ خطأ في حفظ ${filename} إلى GitHub:`, error);
+                throw error;
+            }
+        }
+        
+        // دالة لإنشاء ملف إذا كان غير موجود
+        async function createFileIfMissing(filename, defaultContent) {
+            try {
+                const data = typeof defaultContent === 'string' ? JSON.parse(defaultContent) : defaultContent;
+                const result = await saveToGitHub(filename, data);
+                
+                if (result) {
+                    showAlert(`${filename.split('.')[0]}Message`, `✅ تم إنشاء ملف ${filename} بنجاح`, 'success');
+                    checkFileStatus(filename);
+                }
+            } catch (error) {
+                showAlert(`${filename.split('.')[0]}Message`, `❌ فشل في إنشاء ملف ${filename}: ${error.message}`, 'danger');
+            }
+        }
+        
+        // دالة للتحقق من وجود الملفات
+        async function checkFileStatus(filename) {
+            const statusElementId = `${filename.split('.')[0]}FileStatus`;
+            try {
+                const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filename}?ref=${BRANCH}`, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (response.ok) {
+                    document.getElementById(statusElementId).innerHTML = '<span style="color: #198754;">✅ موجود</span>';
+                } else if (response.status === 404) {
+                    document.getElementById(statusElementId).innerHTML = '<span style="color: #dc3545;">❌ غير موجود</span>';
+                } else {
+                    document.getElementById(statusElementId).innerHTML = '<span style="color: #ffc107;">⚠️ خطأ في التحقق</span>';
+                }
+            } catch (error) {
+                document.getElementById(statusElementId).innerHTML = '<span style="color: #6c757d;">🔗 جاري التحقق...</span>';
+            }
+        }
+        
+        // ========== التبويبات ==========
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // إخفاء جميع المحتويات
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // إزالة النشط من جميع الأزرار
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // إظهار المحتوى المختار
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+                button.classList.add('active');
+                
+                // تحميل البيانات عند التبديل
+                if (tabId === 'products') {
+                    loadProducts();
+                } else if (tabId === 'shops') {
+                    loadShops();
+                } else if (tabId === 'ads') {
+                    loadAds();
+                } else if (tabId === 'settings') {
+                    loadSettings();
+                    checkAllFileStatus();
+                }
+            });
+        });
+        
+        // ========== تحميل البيانات الأولية ==========
+        async function loadInitialData() {
+            try {
+                updateConnectionStatus('جاري تحميل البيانات من GitHub...', 'warning');
+                
+                // تحميل البيانات من GitHub
+                const [productsData, shopsData, adsData, settingsData] = await Promise.allSettled([
+                    readFromGitHub(PRODUCTS_FILE),
+                    readFromGitHub(SHOPS_FILE),
+                    readFromGitHub(ADS_FILE),
+                    readFromGitHub(SETTINGS_FILE)
+                ]);
+                
+                // معالجة البيانات
+                products = productsData.status === 'fulfilled' && productsData.value ? productsData.value : [];
+                shops = shopsData.status === 'fulfilled' && shopsData.value ? shopsData.value : [];
+                ads = adsData.status === 'fulfilled' && adsData.value ? adsData.value : [];
+                settings = settingsData.status === 'fulfilled' && settingsData.value ? settingsData.value : { header_mode: 'ads' };
+                
+                updateStatistics();
+                loadProducts();
+                updateHeaderModeDisplay();
+                
+                updateConnectionStatus('✅ متصل بـ GitHub', 'success');
+                showAlert('dashboard', '✅ تم تحميل البيانات بنجاح من GitHub', 'success');
+                
+            } catch (error) {
+                console.error('❌ خطأ في تحميل البيانات:', error);
+                updateConnectionStatus('❌ فشل الاتصال بـ GitHub', 'danger');
+                showAlert('dashboard', '⚠️ خطأ في تحميل البيانات من GitHub. تأكد من صحة التوكن وصلاحيات الوصول.', 'danger');
+            }
+        }
+        
+        // ========== تحديث الإحصائيات ==========
+        function updateStatistics() {
+            document.getElementById('totalProducts').textContent = products.length;
+            document.getElementById('totalShops').textContent = shops.length;
+            document.getElementById('totalAds').textContent = ads.length;
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('ar-SA');
+        }
+        
+        // ========== تحديث حالة الاتصال ==========
+        function updateConnectionStatus(message, type = 'info') {
+            const statusElement = document.getElementById('connectionStatus');
+            statusElement.textContent = message;
+            statusElement.style.color = type === 'success' ? '#198754' : 
+                                      type === 'warning' ? '#ffc107' : 
+                                      type === 'danger' ? '#dc3545' : '#6c757d';
+        }
+        
+        // ========== إدارة المنتجات ==========
+        // عرض/إخفاء حقل المحل حسب القسم
+        document.getElementById('productSection').addEventListener('change', function() {
+            const shopField = document.getElementById('shopField');
+            const productShop = document.getElementById('productShop');
+            
+            if (SHOP_REQUIRED_SECTIONS.includes(this.value)) {
+                shopField.style.display = 'block';
+                
+                // تحميل المحلات الخاصة بهذا القسم
+                const sectionShops = shops.filter(shop => shop.section === this.value);
+                productShop.innerHTML = '<option value="">اختر المحل</option>';
+                
+                sectionShops.forEach(shop => {
+                    const option = document.createElement('option');
+                    option.value = shop.id;
+                    option.textContent = shop.name;
+                    productShop.appendChild(option);
+                });
+            } else {
+                shopField.style.display = 'none';
+            }
+        });
+        
+        // إضافة منتج جديد
+        async function addProduct() {
+            const section = document.getElementById('productSection').value;
+            const name = document.getElementById('productName').value;
+            const price = document.getElementById('productPrice').value;
+            const type = document.getElementById('productType').value;
+            const description = document.getElementById('productDescription').value;
+            const photo = document.getElementById('productPhoto').value;
+            
+            // التحقق من البيانات
+            if (!section || !name || !price || !type || !photo) {
+                showAlert('productMessage', '⚠️ الرجاء ملء جميع الحقول المطلوبة', 'warning');
+                return;
+            }
+            
+            // التحقق من المحل للأقسام التي تتطلب محلاً
+            let shopId = null;
+            if (SHOP_REQUIRED_SECTIONS.includes(section)) {
+                shopId = document.getElementById('productShop').value;
+                if (!shopId) {
+                    showAlert('productMessage', '⚠️ هذا القسم يتطلب اختيار محل', 'warning');
+                    return;
+                }
+            }
+            
+            // إظهار حالة التحميل
+            const btnText = document.getElementById('productBtnText');
+            const loading = document.getElementById('productLoading');
+            btnText.textContent = 'جاري الحفظ إلى GitHub...';
+            loading.style.display = 'inline-block';
+            
+            // إنشاء المنتج
+            const product = {
+                id: 'PROD_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                section: section,
+                name: name,
+                price: price,
+                type: type,
+                description: description || '',
+                photo: photo,
+                created_at: new Date().toISOString(),
+                active: true
+            };
+            
+            // إضافة المحل إذا كان مطلوباً
+            if (shopId) {
+                product.shop_id = shopId;
+            }
+            
+            try {
+                // إضافة المنتج للقائمة
+                products.push(product);
+                
+                // حفظ في GitHub
+                await saveToGitHub(PRODUCTS_FILE, products);
+                
+                // إعادة تعيين النموذج
+                document.getElementById('addProductForm').reset();
+                document.getElementById('shopField').style.display = 'none';
+                
+                // إخفاء حالة التحميل
+                btnText.textContent = '💾 حفظ المنتج إلى GitHub';
+                loading.style.display = 'none';
+                
+                // إظهار رسالة النجاح
+                showAlert('productMessage', '✅ تم إضافة المنتج بنجاح وحفظه في GitHub', 'success');
+                
+                // تحديث القائمة والإحصائيات
+                updateStatistics();
+                loadProducts();
+                
+            } catch (error) {
+                // في حالة الخطأ، نعيد المنتج من القائمة
+                products.pop();
+                btnText.textContent = '💾 حفظ المنتج إلى GitHub';
+                loading.style.display = 'none';
+                showAlert('productMessage', `❌ فشل في حفظ المنتج: ${error.message}`, 'danger');
+            }
+        }
+        
+        // تحميل وعرض المنتجات
+        function loadProducts() {
+            const productsList = document.getElementById('productsList');
+            productsList.innerHTML = '';
+            
+            if (products.length === 0) {
+                productsList.innerHTML = `
+                    <div class="empty-state">
+                        <div>📭</div>
+                        <h3>لا توجد منتجات</h3>
+                        <p>ابدأ بإضافة أول منتج للمتجر</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            products.forEach((product, index) => {
+                const productItem = document.createElement('div');
+                productItem.className = 'data-item';
+                productItem.innerHTML = `
+                    <div class="data-info">
+                        <h4>${product.name}</h4>
+                        <p><strong>القسم:</strong> ${product.section}</p>
+                        <p><strong>النوع:</strong> ${product.type} | <strong>السعر:</strong> ${product.price} ل.س</p>
+                        <p>${product.description ? product.description.substring(0, 50) + '...' : ''}</p>
+                    </div>
+                    <div class="data-actions">
+                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(${index})">🗑️ حذف</button>
+                    </div>
+                `;
+                productsList.appendChild(productItem);
+            });
+        }
+        
+        // بحث المنتجات
+        function searchProducts() {
+            const query = document.getElementById('searchProduct').value.toLowerCase();
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(query) ||
+                product.type.toLowerCase().includes(query) ||
+                product.section.toLowerCase().includes(query)
+            );
+            
+            const productsList = document.getElementById('productsList');
+            productsList.innerHTML = '';
+            
+            if (filteredProducts.length === 0) {
+                productsList.innerHTML = `
+                    <div class="empty-state">
+                        <div>🔍</div>
+                        <h3>لا توجد نتائج</h3>
+                        <p>حاول البحث بكلمات أخرى</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredProducts.forEach((product, index) => {
+                const originalIndex = products.findIndex(p => p.id === product.id);
+                const productItem = document.createElement('div');
+                productItem.className = 'data-item';
+                productItem.innerHTML = `
+                    <div class="data-info">
+                        <h4>${product.name}</h4>
+                        <p><strong>القسم:</strong> ${product.section}</p>
+                        <p><strong>النوع:</strong> ${product.type} | <strong>السعر:</strong> ${product.price} ل.س</p>
+                    </div>
+                    <div class="data-actions">
+                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(${originalIndex})">🗑️ حذف</button>
+                    </div>
+                `;
+                productsList.appendChild(productItem);
+            });
+        }
+        
+        // حذف منتج
+        async function deleteProduct(index) {
+            if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
+            
+            products.splice(index, 1);
+            
+            try {
+                await saveToGitHub(PRODUCTS_FILE, products);
+                updateStatistics();
+                loadProducts();
+                showAlert('productMessage', '🗑️ تم حذف المنتج بنجاح من GitHub', 'success');
+            } catch (error) {
+                showAlert('productMessage', `❌ فشل في حذف المنتج: ${error.message}`, 'danger');
+            }
+        }
+        
+        // ========== إدارة المحلات ==========
+        // إضافة محل جديد
+        async function addShop() {
+            const section = document.getElementById('shopSection').value;
+            const name = document.getElementById('shopName').value;
+            const type = document.getElementById('shopType').value;
+            const description = document.getElementById('shopDescription').value;
+            const photo = document.getElementById('shopPhoto').value;
+            
+            // التحقق من البيانات
+            if (!section || !name || !type || !description || !photo) {
+                showAlert('shopMessage', '⚠️ الرجاء ملء جميع الحقول المطلوبة', 'warning');
+                return;
+            }
+            
+            // إظهار حالة التحميل
+            const btnText = document.getElementById('shopBtnText');
+            const loading = document.getElementById('shopLoading');
+            btnText.textContent = 'جاري الحفظ إلى GitHub...';
+            loading.style.display = 'inline-block';
+            
+            // إنشاء المحل
+            const shop = {
+                id: 'SHOP_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                section: section,
+                name: name,
+                type: type,
+                description: description,
+                photo: photo,
+                created_at: new Date().toISOString(),
+                active: true
+            };
+            
+            try {
+                // إضافة المحل للقائمة
+                shops.push(shop);
+                
+                // حفظ في GitHub
+                await saveToGitHub(SHOPS_FILE, shops);
+                
+                // إعادة تعيين النموذج
+                document.getElementById('addShopForm').reset();
+                
+                // إخفاء حالة التحميل
+                btnText.textContent = '💾 حفظ المحل إلى GitHub';
+                loading.style.display = 'none';
+                
+                // إظهار رسالة النجاح
+                showAlert('shopMessage', '✅ تم إضافة المحل بنجاح وحفظه في GitHub', 'success');
+                
+                // تحديث القائمة والإحصائيات
+                updateStatistics();
+                loadShops();
+                
+            } catch (error) {
+                // في حالة الخطأ، نعيد المحل من القائمة
+                shops.pop();
+                btnText.textContent = '💾 حفظ المحل إلى GitHub';
+                loading.style.display = 'none';
+                showAlert('shopMessage', `❌ فشل في حفظ المحل: ${error.message}`, 'danger');
+            }
+        }
+        
+        // تحميل وعرض المحلات
+        function loadShops() {
+            const shopsList = document.getElementById('shopsList');
+            shopsList.innerHTML = '';
+            
+            if (shops.length === 0) {
+                shopsList.innerHTML = `
+                    <div class="empty-state">
+                        <div>🏪</div>
+                        <h3>لا توجد محلات</h3>
+                        <p>ابدأ بإضافة أول محل للمتجر</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            shops.forEach((shop, index) => {
+                const shopItem = document.createElement('div');
+                shopItem.className = 'data-item';
+                shopItem.innerHTML = `
+                    <div class="data-info">
+                        <h4>${shop.name}</h4>
+                        <p><strong>القسم:</strong> ${shop.section}</p>
+                        <p><strong>النوع:</strong> ${shop.type}</p>
+                        <p>${shop.description.substring(0, 70)}...</p>
+                    </div>
+                    <div class="data-actions">
+                        <button class="btn btn-danger btn-sm" onclick="deleteShop(${index})">🗑️ حذف</button>
+                    </div>
+                `;
+                shopsList.appendChild(shopItem);
+            });
+        }
+        
+        // بحث المحلات
+        function searchShops() {
+            const query = document.getElementById('searchShop').value.toLowerCase();
+            const filteredShops = shops.filter(shop => 
+                shop.name.toLowerCase().includes(query) ||
+                shop.type.toLowerCase().includes(query) ||
+                shop.section.toLowerCase().includes(query)
+            );
+            
+            const shopsList = document.getElementById('shopsList');
+            shopsList.innerHTML = '';
+            
+            if (filteredShops.length === 0) {
+                shopsList.innerHTML = `
+                    <div class="empty-state">
+                        <div>🔍</div>
+                        <h3>لا توجد نتائج</h3>
+                        <p>حاول البحث بكلمات أخرى</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredShops.forEach((shop, index) => {
+                const originalIndex = shops.findIndex(s => s.id === shop.id);
+                const shopItem = document.createElement('div');
+                shopItem.className = 'data-item';
+                shopItem.innerHTML = `
+                    <div class="data-info">
+                        <h4>${shop.name}</h4>
+                        <p><strong>القسم:</strong> ${shop.section}</p>
+                        <p><strong>النوع:</strong> ${shop.type}</p>
+                    </div>
+                    <div class="data-actions">
+                        <button class="btn btn-danger btn-sm" onclick="deleteShop(${originalIndex})">🗑️ حذف</button>
+                    </div>
+                `;
+                shopsList.appendChild(shopItem);
+            });
+        }
+        
+        // حذف محل
+        async function deleteShop(index) {
+            if (!confirm('هل أنت متأكد من حذف هذا المحل؟ سيتم حذف جميع المنتجات المرتبطة به.')) return;
+            
+            try {
+                // حذف المنتجات المرتبطة بهذا المحل
+                const shopId = shops[index].id;
+                products = products.filter(product => product.shop_id !== shopId);
+                
+                // حذف المحل
+                shops.splice(index, 1);
+                
+                // حفظ التغييرات
+                await Promise.all([
+                    saveToGitHub(PRODUCTS_FILE, products),
+                    saveToGitHub(SHOPS_FILE, shops)
+                ]);
+                
+                updateStatistics();
+                loadShops();
+                showAlert('shopMessage', '🗑️ تم حذف المحل والمنتجات المرتبطة به من GitHub', 'success');
+            } catch (error) {
+                showAlert('shopMessage', `❌ فشل في حذف المحل: ${error.message}`, 'danger');
+            }
+        }
+        
+        // ========== إدارة الإعلانات ==========
+        // عرض/إخفاء حقل الربط
+        document.getElementById('adLinkType').addEventListener('change', function() {
+            const linkField = document.getElementById('adLinkField');
+            const linkLabel = document.getElementById('adLinkLabel');
+            const linkSelect = document.getElementById('adLinkId');
+            
+            if (this.value === 'shop') {
+                linkField.style.display = 'block';
+                linkLabel.textContent = 'اختر المحل';
+                linkSelect.innerHTML = '<option value="">-- اختر المحل --</option>';
+                
+                shops.forEach(shop => {
+                    const option = document.createElement('option');
+                    option.value = shop.id;
+                    option.textContent = shop.name;
+                    linkSelect.appendChild(option);
+                });
+                
+            } else if (this.value === 'product') {
+                linkField.style.display = 'block';
+                linkLabel.textContent = 'اختر المنتج';
+                linkSelect.innerHTML = '<option value="">-- اختر المنتج --</option>';
+                
+                products.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product.id;
+                    option.textContent = product.name;
+                    linkSelect.appendChild(option);
+                });
+                
+            } else {
+                linkField.style.display = 'none';
+            }
+        });
+        
+        // إضافة إعلان جديد
+        async function addAd() {
+            const name = document.getElementById('adName').value;
+            const description = document.getElementById('adDescription').value;
+            const photo = document.getElementById('adPhoto').value;
+            const linkType = document.getElementById('adLinkType').value;
+            const linkId = document.getElementById('adLinkId').value;
+            
+            // التحقق من البيانات
+            if (!name || !description || !photo) {
+                showAlert('adMessage', '⚠️ الرجاء ملء جميع الحقول المطلوبة', 'warning');
+                return;
+            }
+            
+            // إظهار حالة التحميل
+            const btnText = document.getElementById('adBtnText');
+            const loading = document.getElementById('adLoading');
+            btnText.textContent = 'جاري الحفظ إلى GitHub...';
+            loading.style.display = 'inline-block';
+            
+            // إنشاء الإعلان
+            const ad = {
+                id: 'AD_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                name: name,
+                description: description,
+                photo: photo,
+                created_at: new Date().toISOString(),
+                active: true
+            };
+            
+            // إضافة الربط إذا كان موجوداً
+            if (linkType && linkId) {
+                ad.link_type = linkType;
+                ad.link_id = linkId;
+                
+                // إضافة اسم المحل أو المنتج المرتبط
+                if (linkType === 'shop') {
+                    const shop = shops.find(s => s.id === linkId);
+                    if (shop) {
+                        ad.shop_name = shop.name;
+                        ad.section = shop.section;
+                    }
+                } else if (linkType === 'product') {
+                    const product = products.find(p => p.id === linkId);
+                    if (product) {
+                        ad.product_name = product.name;
+                        ad.section = product.section;
+                    }
+                }
+            }
+            
+            try {
+                // إضافة الإعلان للقائمة
+                ads.push(ad);
+                
+                // حفظ في GitHub
+                await saveToGitHub(ADS_FILE, ads);
+                
+                // إعادة تعيين النموذج
+                document.getElementById('addAdForm').reset();
+                document.getElementById('adLinkField').style.display = 'none';
+                
+                // إخفاء حالة التحميل
+                btnText.textContent = '💾 حفظ الإعلان إلى GitHub';
+                loading.style.display = 'none';
+                
+                // إظهار رسالة النجاح
+                showAlert('adMessage', '✅ تم إضافة الإعلان بنجاح وحفظه في GitHub', 'success');
+                
+                // تحديث القائمة والإحصائيات
+                updateStatistics();
+                loadAds();
+                
+            } catch (error) {
+                // في حالة الخطأ، نعيد الإعلان من القائمة
+                ads.pop();
+                btnText.textContent = '💾 حفظ الإعلان إلى GitHub';
+                loading.style.display = 'none';
+                showAlert('adMessage', `❌ فشل في حفظ الإعلان: ${error.message}`, 'danger');
+            }
+        }
+        
+        // تحميل وعرض الإعلانات
+        function loadAds() {
+            const adsList = document.getElementById('adsList');
+            adsList.innerHTML = '';
+            
+            if (ads.length === 0) {
+                adsList.innerHTML = `
+                    <div class="empty-state">
+                        <div>⭐</div>
+                        <h3>لا توجد إعلانات</h3>
+                        <p>ابدأ بإضافة أول إعلان للمتجر</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            ads.forEach((ad, index) => {
+                const adItem = document.createElement('div');
+                adItem.className = 'data-item';
+                
+                let linkInfo = '';
+                if (ad.link_type === 'shop') {
+                    linkInfo = `<p><strong>مرتبط بمحل:</strong> ${ad.shop_name}</p>`;
+                } else if (ad.link_type === 'product') {
+                    linkInfo = `<p><strong>مرتبط بمنتج:</strong> ${ad.product_name}</p>`;
+                }
+                
+                adItem.innerHTML = `
+                    <div class="data-info">
+                        <h4>${ad.name}</h4>
+                        <p>${ad.description.substring(0, 70)}...</p>
+                        ${linkInfo}
+                        <p><small>أضيف في: ${new Date(ad.created_at).toLocaleDateString('ar-SA')}</small></p>
+                    </div>
+                    <div class="data-actions">
+                        <button class="btn btn-danger btn-sm" onclick="deleteAd(${index})">🗑️ حذف</button>
+                    </div>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+        
+        // بحث الإعلانات
+        function searchAds() {
+            const query = document.getElementById('searchAd').value.toLowerCase();
+            const filteredAds = ads.filter(ad => 
+                ad.name.toLowerCase().includes(query) ||
+                ad.description.toLowerCase().includes(query)
+            );
+            
+            const adsList = document.getElementById('adsList');
+            adsList.innerHTML = '';
+            
+            if (filteredAds.length === 0) {
+                adsList.innerHTML = `
+                    <div class="empty-state">
+                        <div>🔍</div>
+                        <h3>لا توجد نتائج</h3>
+                        <p>حاول البحث بكلمات أخرى</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredAds.forEach((ad, index) => {
+                const originalIndex = ads.findIndex(a => a.id === ad.id);
+                const adItem = document.createElement('div');
+                adItem.className = 'data-item';
+                adItem.innerHTML = `
+                    <div class="data-info">
+                        <h4>${ad.name}</h4>
+                        <p>${ad.description.substring(0, 50)}...</p>
+                    </div>
+                    <div class="data-actions">
+                        <button class="btn btn-danger btn-sm" onclick="deleteAd(${originalIndex})">🗑️ حذف</button>
+                    </div>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+        
+        // حذف إعلان
+        async function deleteAd(index) {
+            if (!confirm('هل أنت متأكد من حذف هذا الإعلان؟')) return;
+            
+            ads.splice(index, 1);
+            
+            try {
+                await saveToGitHub(ADS_FILE, ads);
+                updateStatistics();
+                loadAds();
+                showAlert('adMessage', '🗑️ تم حذف الإعلان بنجاح من GitHub', 'success');
+            } catch (error) {
+                showAlert('adMessage', `❌ فشل في حذف الإعلان: ${error.message}`, 'danger');
+            }
+        }
+        
+        // ========== إدارة الإعدادات ==========
+        // تحميل الإعدادات
+        async function loadSettings() {
+            try {
+                const settingsData = await readFromGitHub(SETTINGS_FILE);
+                if (settingsData) {
+                    settings = settingsData;
+                } else {
+                    settings = { header_mode: 'ads' };
+                }
+                updateHeaderModeDisplay();
+            } catch (error) {
+                console.error('❌ خطأ في تحميل الإعدادات:', error);
+                settings = { header_mode: 'ads' };
+                updateHeaderModeDisplay();
+            }
+        }
+        
+        // تحديث عرض وضع الهيدر
+        function updateHeaderModeDisplay() {
+            const currentMode = document.getElementById('currentHeaderMode');
+            const statusBadge = document.getElementById('headerModeStatus');
+            
+            currentMode.innerHTML = `
+                <strong>${settings.header_mode === 'ads' ? 'إعلانات (ads)' : 'محتوى بديل (else)'}</strong>
+                <br>
+                <small>${settings.header_mode === 'ads' ? 'عرض الإعلانات في الهيدر' : 'عرض خيارات أخرى في الهيدر'}</small>
+            `;
+            
+            statusBadge.textContent = settings.header_mode === 'ads' ? 'ads' : 'else';
+            statusBadge.className = `status-badge ${settings.header_mode}`;
+            
+            // تحديث زر التبديل
+            const toggleBtn = document.getElementById('toggleHeaderBtn');
+            if (toggleBtn) {
+                toggleBtn.innerHTML = `
+                    <span id="toggleBtnText">🔄 تبديل إلى ${settings.header_mode === 'ads' ? 'else' : 'ads'}</span>
+                    <div class="loading" id="headerModeLoading" style="display: none;"></div>
+                `;
+            }
+        }
+        
+        // تبديل وضع الهيدر
+        async function toggleHeaderMode() {
+            const btnText = document.getElementById('toggleBtnText');
+            const loading = document.getElementById('headerModeLoading');
+            
+            btnText.textContent = 'جاري التبديل...';
+            loading.style.display = 'inline-block';
+            
+            try {
+                // تبديل الوضع
+                settings.header_mode = settings.header_mode === 'ads' ? 'else' : 'ads';
+                
+                // حفظ في GitHub
+                await saveToGitHub(SETTINGS_FILE, settings);
+                
+                // تحديث العرض
+                updateHeaderModeDisplay();
+                
+                // إخفاء حالة التحميل
+                btnText.textContent = `🔄 تبديل إلى ${settings.header_mode === 'ads' ? 'else' : 'ads'}`;
+                loading.style.display = 'none';
+                
+                // إظهار رسالة النجاح
+                showAlert('headerModeMessage', `✅ تم تغيير وضع الهيدر إلى "${settings.header_mode}" بنجاح`, 'success');
+                
+            } catch (error) {
+                // إخفاء حالة التحميل
+                btnText.textContent = `🔄 تبديل إلى ${settings.header_mode === 'ads' ? 'else' : 'ads'}`;
+                loading.style.display = 'none';
+                
+                // إظهار رسالة الخطأ
+                showAlert('headerModeMessage', `❌ فشل في تغيير وضع الهيدر: ${error.message}`, 'danger');
+            }
+        }
+        
+        // التحقق من حالة جميع الملفات
+        async function checkAllFileStatus() {
+            checkFileStatus(PRODUCTS_FILE);
+            checkFileStatus(SHOPS_FILE);
+            checkFileStatus(ADS_FILE);
+            checkFileStatus(SETTINGS_FILE);
+        }
+        
+        // ========== أدوات مساعدة ==========
+        function showAlert(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.textContent = message;
+            container.className = `alert alert-${type}`;
+            container.style.display = 'block';
+            
+            setTimeout(() => {
+                container.style.display = 'none';
+            }, 5000);
+        }
+        
+        // اختبار اتصال GitHub
+        async function testGitHubConnection() {
+            updateConnectionStatus('🔗 جاري اختبار الاتصال بـ GitHub...', 'warning');
+            
+            try {
+                const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (response.ok) {
+                    updateConnectionStatus('✅ الاتصال بـ GitHub ناجح', 'success');
+                    document.getElementById('apiStatus').textContent = '✅ متصل';
+                    showAlert('dashboard', '✅ الاتصال بمستودع GitHub ناجح', 'success');
+                } else {
+                    updateConnectionStatus('❌ فشل الاتصال بـ GitHub', 'danger');
+                    document.getElementById('apiStatus').textContent = '❌ غير متصل';
+                    showAlert('dashboard', '❌ فشل الاتصال بمستودع GitHub. تأكد من صحة التوكن.', 'danger');
+                }
+            } catch (error) {
+                updateConnectionStatus('❌ خطأ في الاتصال', 'danger');
+                document.getElementById('apiStatus').textContent = '❌ خطأ اتصال';
+                showAlert('dashboard', `❌ خطأ في الاتصال: ${error.message}`, 'danger');
+            }
+        }
+        
+        // تحديث جميع البيانات
+        async function reloadAllData() {
+            try {
+                updateConnectionStatus('🔄 جاري تحديث جميع البيانات...', 'warning');
+                
+                const [productsData, shopsData, adsData, settingsData] = await Promise.allSettled([
+                    readFromGitHub(PRODUCTS_FILE),
+                    readFromGitHub(SHOPS_FILE),
+                    readFromGitHub(ADS_FILE),
+                    readFromGitHub(SETTINGS_FILE)
+                ]);
+                
+                products = productsData.status === 'fulfilled' && productsData.value ? productsData.value : [];
+                shops = shopsData.status === 'fulfilled' && shopsData.value ? shopsData.value : [];
+                ads = adsData.status === 'fulfilled' && adsData.value ? adsData.value : [];
+                settings = settingsData.status === 'fulfilled' && settingsData.value ? settingsData.value : { header_mode: 'ads' };
+                
+                updateStatistics();
+                loadProducts();
+                updateHeaderModeDisplay();
+                
+                updateConnectionStatus('✅ تم تحديث جميع البيانات', 'success');
+                showAlert('dashboard', '✅ تم تحديث جميع البيانات بنجاح من GitHub', 'success');
+            } catch (error) {
+                updateConnectionStatus('❌ فشل في تحديث البيانات', 'danger');
+                showAlert('dashboard', `❌ فشل في تحديث البيانات: ${error.message}`, 'danger');
+            }
+        }
+        
+        // ========== تحميل الصفحة ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحميل البيانات الأولية
+            loadInitialData();
+            
+            // اختبار الاتصال بعد تحميل الصفحة
+            setTimeout(() => {
+                testGitHubConnection();
+            }, 1000);
+            
+            // إضافة تنبيه الترحيب
+            setTimeout(() => {
+                showAlert('dashboard', '👋 مرحباً! لوحة التحكم متصلة بـ GitHub. يمكنك الآن إدارة متجر بتكة مباشرة من المستودع.', 'success');
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
