@@ -1,17 +1,5 @@
 [
   {
-    "id": "GK5MSW5VE",
-    "section": "🍰 مطاعم وحلويات",
-    "name": "الموصلي",
-    "gps": "33.515717, 36.280507",
-    "type": "مطعم",
-    "description": "يسشيشس",
-    "photo": "https://mrdr0956.github.io/Btikka-site/images/shop.jpg",
-    "created_at": "2025-12-06T11:50:29.972Z",
-    "active": true,
-    "discount_active": false
-  },
-  {
     "id": "0XYQT8H42",
     "section": "🍰 مطاعم وحلويات",
     "name": "الموصلي",
