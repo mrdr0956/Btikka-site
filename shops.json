@@ -10,5 +10,18 @@
     "created_at": "2025-12-06T11:57:56.974Z",
     "active": true,
     "discount_active": false
+  },
+  {
+    "id": "BLZJDSE5X",
+    "section": "🛍️ سوبر ماركت – مواد غذائية",
+    "name": "بتكة",
+    "gps": "33.515717, 36.280504",
+    "type": "سوبر ماركت",
+    "description": "شسيسشيسش",
+    "photo": "https://mrdr0956.github.io/Btikka-site/images/s.jpg",
+    "created_at": "2025-12-06T12:00:40.844Z",
+    "active": true,
+    "discount_active": true,
+    "discount_percentage": 10
   }
 ]
