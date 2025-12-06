@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "id": "TSBCNLRMR",
+    "section": "🍰 مطاعم وحلويات",
+    "shop_id": "0XYQT8H42",
+    "name": "فروج",
+    "status": "retail",
+    "gps": "33.515717, 36.280507",
+    "type": "مشاوي",
+    "description": "مشوي مع خولاني",
+    "photo": "https://mrdr0956.github.io/Btikka-site/images/j.jpg",
+    "created_at": "2025-12-06T12:05:30.284Z",
+    "active": true,
+    "offer_active": false,
+    "retail_price": 5000
+  }
+]
